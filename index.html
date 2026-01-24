@@ -18,6 +18,20 @@
         // Remove any WordPress emoji settings
         window._wpemojiSettings = null;
     </script>
+
+    <script>
+        function sendHeight() {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({ type: 'resize', height: height }, '*');
+            }
+            
+        // Send on load
+        window.addEventListener('load', sendHeight);
+            
+        // Send on content changes
+        const resizeObserver = new ResizeObserver(sendHeight);
+        resizeObserver.observe(document.body);
+    </script>
     
     <style>
         /* =====================================================
