@@ -1,0 +1,2570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automation Tool Analyzer | SelectorsHub</title>
+    <meta name="description" content="AI-powered tool to analyze websites and recommend Selenium or Playwright for UI automation testing. Free tool by SelectorsHub.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Disable WordPress emoji conversion -->
+    <script>
+        if (typeof window.wp !== 'undefined' && window.wp.emoji) {
+            window.wp.emoji.parse = function() {};
+        }
+        // Remove any WordPress emoji settings
+        window._wpemojiSettings = null;
+    </script>
+    
+    <style>
+        /* =====================================================
+           SELECTORSHUB LIGHT THEME
+           ===================================================== */
+        
+        :root {
+            /* Background Colors */
+            --bg-body: #f8f9fc;
+            --bg-white: #ffffff;
+            --bg-light: #f1f5f9;
+            --bg-input: #f8fafc;
+            
+            /* Brand Colors */
+            --sh-orange: #ca7702;
+            --sh-orange-hover: #b56a02;
+            --sh-orange-light: #fef3e2;
+            --sh-purple: #6366f1;
+            --sh-purple-light: #e0e7ff;
+            --sh-green: #22c55e;
+            --sh-green-light: #dcfce7;
+            --sh-blue: #3b82f6;
+            --sh-cyan: #06b6d4;
+            --sh-red: #ef4444;
+            
+            /* Tool Colors */
+            --selenium-color: #43b02a;
+            --selenium-bg: rgba(67, 176, 42, 0.1);
+            --selenium-border: rgba(67, 176, 42, 0.25);
+            --playwright-color: #2d7ff9;
+            --playwright-bg: rgba(45, 127, 249, 0.1);
+            --playwright-border: rgba(45, 127, 249, 0.25);
+            --cypress-color: #00BF88;
+            --cypress-bg: rgba(0, 191, 136, 0.1);
+            --cypress-border: rgba(0, 191, 136, 0.25);
+            --webdriverio-color: #EA5906;
+            --webdriverio-bg: rgba(234, 89, 6, 0.1);
+            --webdriverio-border: rgba(234, 89, 6, 0.25);
+            
+            /* Text Colors */
+            --text-dark: #1e293b;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            
+            /* Borders & Shadows */
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            /* Spacing */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-body);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: var(--sh-orange-light);
+            border: 1px solid rgba(202, 119, 2, 0.2);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--sh-orange);
+            margin-bottom: 20px;
+        }
+
+        .badge svg {
+            flex-shrink: 0;
+        }
+
+        .title {
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .title-highlight {
+            color: var(--sh-orange);
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .subtitle strong {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* =====================================================
+           INPUT CARD
+           ===================================================== */
+        
+        .input-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .input-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .input-row { flex-direction: column; }
+        }
+
+        .url-wrapper {
+            flex: 1;
+            position: relative;
+            margin-top: 9px;
+        }
+
+        .url-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--text-light);
+            pointer-events: none;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .url-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            display: block;
+        }
+        
+        /* Disable WordPress emoji conversion */
+        .url-icon img {
+            display: none !important;
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 18px 24px 18px 52px;
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: var(--sh-orange);
+            box-shadow: 0 0 0 4px rgba(202, 119, 2, 0.1);
+            background: var(--bg-white);
+        }
+
+        .url-input::placeholder {
+            color: var(--text-light);
+        }
+
+        /* Tool Selection Checkboxes */
+        .tool-selection {
+            margin-top: 20px !important;
+            padding-top: 20px !important;
+            border-top: 1px solid var(--border-color) !important;
+        }
+
+        .tool-selection-label {
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            color: var(--text-muted) !important;
+            margin-bottom: 12px !important;
+            display: block !important;
+        }
+
+        .tool-checkboxes {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 12px !important;
+        }
+
+        .tool-checkbox {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 10px 16px !important;
+            background: var(--bg-light) !important;
+            border: 2px solid var(--border-color) !important;
+            border-radius: var(--radius-md) !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            position: relative !important;
+            box-sizing: border-box !important;
+        }
+
+        .tool-checkbox:hover {
+            border-color: var(--sh-orange) !important;
+            background: #fef3e2 !important;
+            box-shadow: 0 2px 8px rgba(202, 119, 2, 0.15) !important;
+        }
+
+        .tool-checkbox:active {
+            transform: scale(0.98) !important;
+        }
+
+        .tool-checkbox.selected {
+            border-color: var(--sh-orange) !important;
+            background: var(--sh-orange-light) !important;
+        }
+
+        .tool-checkbox.selected:hover {
+            border-color: var(--sh-orange-hover) !important;
+            background: var(--sh-orange-light) !important;
+        }
+
+        .tool-checkbox input {
+            position: absolute !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        .tool-checkbox-indicator {
+            width: 18px !important;
+            height: 18px !important;
+            border: 2px solid var(--border-color) !important;
+            border-radius: 4px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.2s ease !important;
+            background: var(--bg-white) !important;
+            box-sizing: border-box !important;
+            flex-shrink: 0 !important;
+        }
+
+        .tool-checkbox:hover .tool-checkbox-indicator {
+            border-color: var(--sh-orange) !important;
+        }
+
+        .tool-checkbox.selected .tool-checkbox-indicator {
+            background: var(--sh-orange) !important;
+            border-color: var(--sh-orange) !important;
+        }
+
+        .tool-checkbox-indicator svg {
+            width: 12px !important;
+            height: 12px !important;
+            stroke: white !important;
+            stroke-width: 3 !important;
+            opacity: 0 !important;
+            transition: opacity 0.2s ease !important;
+        }
+
+        .tool-checkbox.selected .tool-checkbox-indicator svg {
+            opacity: 1 !important;
+        }
+
+        .tool-checkbox-logo {
+            width: 24px !important;
+            height: 24px !important;
+            border-radius: 4px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            flex-shrink: 0 !important;
+        }
+
+        .tool-checkbox-logo.selenium {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='-6.5 0 269 269' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M234.15 0c.66-.04 1.28.3 1.6.87.33.57.3 1.28-.07 1.82l-66.3 90.06c-.49.55-1.18.86-1.92.86-.73 0-1.43-.31-1.92-.86l-23.37-26.06c-.57-.59-1.38-.89-2.2-.82-.82.07-1.56.52-2.02 1.2l-14.18 18.01c-.45 1.01-.3 2.19.38 3.07l42.15 43.69c.49.55 1.18.86 1.92.86.73 0 1.43-.31 1.92-.86l82.78-93.12c.49-.53 1.24-.7 1.92-.45.67.25 1.12.88 1.15 1.6v226.48c.03.52-.16 1.02-.53 1.39-.37.37-.87.56-1.39.53H1.92c-.52.03-1.02-.16-1.39-.53-.37-.37-.56-.87-.53-1.39V1.92c-.03-.52.16-1.02.53-1.39.37-.37.87-.56 1.39-.53h232.23zm-65.15 152.91c-11.41-.2-22.4 4.27-30.44 12.37-8.03 8.1-12.4 19.14-12.1 30.55 0 26.44 19.16 43.3 44.07 43.3 11.53.29 22.84-3.21 32.19-9.96.87-.79 1.03-2.09.38-3.07l-6.9-10.35c-.77-.89-2.09-1.05-3.06-.38-6 4.09-13.05 6.36-20.31 6.51-13.41 0-21.84-8.43-23.38-18.39.03-.41.36-.74.77-.77h57.87c1.23-.08 2.22-1.07 2.3-2.3v-2.3c0-26.83-16.86-45.22-41.39-45.21zm-57.1-14.56c-11.64-9.51-26.37-14.42-41.39-13.79-26.06 0-42.15 15.33-42.15 33.72 0 41.77 63.62 28.36 63.62 47.9 0 6.13-6.13 12.26-19.16 12.26-12.38.1-24.31-4.57-33.34-13.03-.54-.5-1.27-.75-2-.67-.73.07-1.4.46-1.83 1.06l-9.96 13.8c-.65.98-.49 2.28.38 3.07 10.35 9.58 24.91 16.1 45.22 16.1 29.89 0 44.45-15.33 45.22-35.26 0-41.39-63.61-29.52-63.61-47.13 0-6.51 5.75-11.11 15.71-11.11 10.98-.15 21.68 3.5 30.27 10.35.51.41 1.16.6 1.81.53.65-.07 1.24-.4 1.64-.92l9.96-13.41c.41-.51.6-1.16.53-1.81-.07-.65-.4-1.24-.92-1.64zm57.49 31.42c10.42-.58 19.42 7.23 20.31 17.63-.03.41-.36.74-.77.77h-39.09c-.41-.03-.74-.36-.77-.77 1.28-10.2 10.04-17.8 20.32-17.63z' fill='%2343B02A'/%3E%3C/svg%3E") !important;
+        }
+
+        .tool-checkbox-logo.playwright {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M136.444 221.556C123.558 225.213 115.104 231.625 109.535 238.032C114.869 233.364 122.014 229.08 131.652 226.348C141.51 223.554 149.92 223.574 156.869 224.915V219.481C150.941 218.939 144.145 219.371 136.444 221.556ZM108.946 175.876L61.0895 188.484C61.0895 188.484 61.9617 189.716 63.5767 191.36L104.153 180.668C104.153 180.668 103.578 188.077 98.5847 194.705C108.03 187.559 108.946 175.876 108.946 175.876ZM149.005 288.347C81.6582 306.486 46.0272 228.438 35.2396 187.928C30.2556 169.229 28.0799 155.067 27.5 145.928C27.4377 144.979 27.4665 144.179 27.5336 143.446C24.04 143.657 22.3674 145.473 22.7077 150.721C23.2876 159.855 25.4633 174.016 30.4473 192.721C41.2301 233.225 76.8659 311.273 144.213 293.134C158.872 289.185 169.885 281.992 178.152 272.81C170.532 279.692 160.995 285.112 149.005 288.347ZM161.661 128.11V132.903H188.077C187.535 131.206 186.989 129.677 186.447 128.11H161.661Z' fill='%232D4552'/%3E%3Cpath d='M161.661 262.296V239.863L99.3324 257.537C99.3324 257.537 103.938 230.777 136.444 221.556C146.302 218.762 154.713 218.781 161.661 220.123V128.11H192.869C189.471 117.61 186.184 109.526 183.423 103.909C178.856 94.612 174.174 100.775 163.545 109.665C156.059 115.919 137.139 129.261 108.668 136.933C80.1966 144.61 57.179 142.574 47.5752 140.911C33.9601 138.562 26.8387 135.572 27.5049 145.928C28.0847 155.062 30.2605 169.224 35.2445 187.928C46.0272 228.433 81.663 306.481 149.01 288.342C166.602 283.602 179.019 274.233 187.626 262.291H161.661V262.296ZM61.0848 188.484L108.946 175.876C108.946 175.876 107.551 194.288 89.6087 199.018C71.6614 203.743 61.0848 188.484 61.0848 188.484Z' fill='%23E2574C'/%3E%3Cpath d='M341.786 129.174C329.345 131.355 299.498 134.072 262.612 124.185C225.716 114.304 201.236 97.0224 191.537 88.8994C177.788 77.3834 171.74 69.3802 165.788 81.4857C160.526 92.163 153.797 109.54 147.284 133.866C133.171 186.543 122.623 297.706 209.867 321.098C297.093 344.47 343.53 242.92 357.644 190.238C364.157 165.917 367.013 147.5 367.799 135.625C368.695 122.173 359.455 126.078 341.786 129.174ZM166.497 172.756C166.497 172.756 180.246 151.372 203.565 158C226.899 164.628 228.706 190.425 228.706 190.425L166.497 172.756ZM223.42 268.713C182.403 256.698 176.077 223.99 176.077 223.99L286.262 254.796C286.262 254.791 264.021 280.578 223.42 268.713ZM262.377 201.495C262.377 201.495 276.107 180.126 299.422 186.773C322.736 193.411 324.572 219.208 324.572 219.208L262.377 201.495Z' fill='%232EAD33'/%3E%3C/svg%3E") !important;
+        }
+
+        .tool-checkbox-logo.cypress {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='128' cy='128' r='128' fill='%235C5C5E'/%3E%3Cpath d='M192.035 181.07c-4.386 13.597-10.965 23.684-20.176 31.14-9.21 7.457-21.49 11.404-36.84 12.72l-3.07-20.176c10.088-1.316 17.544-3.509 22.369-7.018 1.754-1.316 5.263-5.263 5.263-5.263l-36.404-116.667h30.263l21.053 87.28 22.368-87.28h29.386l-34.21 105.263zm-105.702-109.21c7.018 0 13.597.877 18.86 3.07 5.702 2.193 10.965 5.263 16.228 9.649l-12.28 16.667c-3.51-2.632-7.018-4.386-10.088-5.702-3.07-1.316-7.018-1.754-10.526-1.754-14.912 0-22.369 11.404-22.369 34.65 0 11.842 1.755 20.175 5.702 25 3.948 5.263 9.21 7.456 16.667 7.456 3.509 0 7.018-.439 10.088-1.754 3.07-1.316 6.579-3.07 10.965-5.702l12.28 17.544c-10.087 8.333-21.49 12.28-34.648 12.28-10.527 0-19.299-2.192-27.193-6.578-7.456-4.386-13.597-10.965-17.544-19.299-3.948-8.333-6.14-17.982-6.14-29.386 0-10.965 2.192-21.052 6.14-29.386 3.947-8.772 10.087-15.35 17.543-20.175 7.457-3.948 16.228-6.58 26.316-6.58z' fill='%23fff'/%3E%3C/svg%3E") !important;
+        }
+
+        .tool-checkbox-logo.webdriverio {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Crect fill='%23EA5906' width='64' height='64' rx='5'/%3E%3Cpath d='M8 16v32H6V16h2zm35 0c8.837 0 16 7.163 16 16s-7.163 16-16 16-16-7.163-16-16 7.163-16 16-16zm-16 0L14.106 48H12L24.894 16H27zm16 2c-7.732 0-14 6.268-14 14s6.268 14 14 14 14-6.268 14-14-6.268-14-14-14z' fill='%23fff'/%3E%3C/svg%3E") !important;
+        }
+
+        .tool-checkbox-name {
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            color: var(--text-dark) !important;
+            line-height: 1.2 !important;
+        }
+
+        .tool-checkbox.selected .tool-checkbox-name {
+            color: var(--sh-orange-hover) !important;
+        }
+
+        .tool-selection-hint {
+            font-size: 12px !important;
+            color: var(--text-light) !important;
+            margin-top: 10px !important;
+        }
+
+        .analyze-btn {
+            padding: 18px 40px;
+            background: var(--sh-orange);
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            box-shadow: 0 4px 14px rgba(202, 119, 2, 0.3);
+        }
+
+        .analyze-btn:hover:not(:disabled) {
+            background: var(--sh-orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(202, 119, 2, 0.4);
+        }
+
+        .analyze-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* =====================================================
+           LOADING SECTION
+           ===================================================== */
+        
+        .loading-section {
+            display: none;
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 48px 32px;
+            text-align: center;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .loading-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .loading-spinner {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 28px;
+            position: relative;
+        }
+
+        .loading-spinner::before,
+        .loading-spinner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 4px solid transparent;
+        }
+
+        .loading-spinner::before {
+            border-top-color: var(--selenium-color);
+            border-right-color: var(--selenium-color);
+            animation: spin 1.2s linear infinite;
+        }
+
+        .loading-spinner::after {
+            border-bottom-color: var(--playwright-color);
+            border-left-color: var(--playwright-color);
+            animation: spin 1.2s linear infinite reverse;
+            inset: 10px;
+        }
+
+        .loading-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .loading-step {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--sh-orange);
+            margin-bottom: 28px;
+        }
+
+        .loading-log {
+            text-align: left;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            max-height: 220px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .loading-log::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .loading-log::-webkit-scrollbar-track {
+            background: var(--bg-input);
+        }
+
+        .loading-log::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .log-entry {
+            margin-bottom: 8px;
+            display: flex;
+            gap: 10px;
+            color: var(--text-muted);
+        }
+
+        .log-success { color: var(--sh-green); }
+        .log-warning { color: var(--sh-orange); }
+        .log-info { color: var(--sh-purple); }
+        .log-error { color: var(--sh-red); }
+
+        /* =====================================================
+           ERROR SECTION
+           ===================================================== */
+        
+        .error-section {
+            display: none;
+            background: var(--bg-white);
+            border: 1px solid var(--sh-red);
+            border-radius: var(--radius-xl);
+            padding: 40px 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .error-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .error-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .error-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sh-red);
+        }
+
+        .error-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .error-message {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        .error-suggestions {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .error-suggestions h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .error-suggestions ul {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .error-suggestions li {
+            margin-bottom: 8px;
+        }
+
+        .manual-input-section {
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+        }
+
+        .manual-input-section h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .manual-input-section p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .html-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 16px;
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-dark);
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .html-textarea:focus {
+            outline: none;
+            border-color: var(--sh-orange);
+            box-shadow: 0 0 0 4px rgba(202, 119, 2, 0.1);
+        }
+
+        .html-textarea::placeholder {
+            color: var(--text-light);
+        }
+
+        .manual-analyze-btn {
+            margin-top: 16px;
+            padding: 14px 28px;
+            background: var(--sh-purple);
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .manual-analyze-btn:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           MANUAL INPUT SECTION - ALWAYS VISIBLE
+           ===================================================== */
+        
+        .manual-section {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .manual-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 28px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--bg-white);
+        }
+
+        .manual-toggle:hover {
+            background: var(--bg-light);
+        }
+
+        .manual-toggle-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .manual-toggle-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--sh-purple-light);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sh-purple);
+        }
+
+        .manual-toggle-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .manual-toggle-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .manual-toggle-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .manual-toggle-arrow {
+            color: var(--text-light);
+            transition: transform 0.3s ease;
+        }
+
+        .manual-toggle-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .manual-content {
+            display: none;
+            padding: 0 28px 28px;
+            border-top: 1px solid var(--border-color);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .manual-content.open {
+            display: block;
+        }
+
+        .manual-instructions {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .manual-instructions h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .manual-instructions ol {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .manual-instructions li {
+            margin-bottom: 6px;
+        }
+
+        .manual-instructions kbd {
+            display: inline-block;
+            padding: 2px 6px;
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-dark);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .retry-btn {
+            padding: 14px 28px;
+            background: var(--sh-orange);
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-right: 12px;
+        }
+
+        .retry-btn:hover {
+            background: var(--sh-orange-hover);
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           RESULTS SECTION
+           ===================================================== */
+        
+        .results-section {
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Card */
+        .hero-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 48px 40px;
+            text-align: center;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+        }
+
+        .hero-card.selenium::before {
+            background: linear-gradient(90deg, var(--selenium-color), #6dd55a);
+        }
+
+        .hero-card.playwright::before {
+            background: linear-gradient(90deg, var(--playwright-color), #45d4a8);
+        }
+
+        .hero-card.cypress::before {
+            background: linear-gradient(90deg, var(--cypress-color), #4fd1a5);
+        }
+
+        .hero-card.webdriverio::before {
+            background: linear-gradient(90deg, var(--webdriverio-color), #ff8c42);
+        }
+
+        .hero-label {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 30px;
+        }
+
+        .hero-card.selenium .hero-label {
+            background: var(--selenium-bg);
+            color: var(--selenium-color);
+            border: 1px solid var(--selenium-border);
+        }
+
+        .hero-card.playwright .hero-label {
+            background: var(--playwright-bg);
+            color: var(--playwright-color);
+            border: 1px solid var(--playwright-border);
+        }
+
+        .hero-card.cypress .hero-label {
+            background: var(--cypress-bg);
+            color: var(--cypress-color);
+            border: 1px solid var(--cypress-border);
+        }
+
+        .hero-card.webdriverio .hero-label {
+            background: var(--webdriverio-bg);
+            color: var(--webdriverio-color);
+            border: 1px solid var(--webdriverio-border);
+        }
+
+        .hero-tool {
+            font-size: clamp(40px, 10vw, 60px);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .hero-card.selenium .hero-tool { color: var(--selenium-color); }
+        .hero-card.playwright .hero-tool { color: var(--playwright-color); }
+        .hero-card.cypress .hero-tool { color: var(--cypress-color); }
+        .hero-card.webdriverio .hero-tool { color: var(--webdriverio-color); }
+
+        .hero-confidence {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            margin-top: 30px;
+        }
+
+        .hero-confidence strong {
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .confidence-bar {
+            width: 300px;
+            height: 10px;
+            background: var(--bg-light);
+            border-radius: 100px;
+            margin: 0 auto 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .confidence-fill {
+            height: 100%;
+            border-radius: 100px;
+            transition: width 1s ease;
+        }
+
+        .hero-card.selenium .confidence-fill {
+            background: linear-gradient(90deg, var(--selenium-color), #6dd55a);
+        }
+
+        .hero-card.playwright .confidence-fill {
+            background: linear-gradient(90deg, var(--playwright-color), #45d4a8);
+        }
+
+        .hero-card.cypress .confidence-fill {
+            background: linear-gradient(90deg, var(--cypress-color), #4fd1a5);
+        }
+
+        .hero-card.webdriverio .confidence-fill {
+            background: linear-gradient(90deg, var(--webdriverio-color), #ff8c42);
+        }
+
+        .hero-summary {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* Score Grid */
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .score-card {
+            background: var(--bg-white);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .score-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .score-card.winner {
+            border-width: 2px;
+        }
+
+        .score-card.selenium.winner {
+            border-color: var(--selenium-color);
+            background: linear-gradient(180deg, var(--selenium-bg) 0%, var(--bg-white) 100%);
+        }
+
+        .score-card.playwright.winner {
+            border-color: var(--playwright-color);
+            background: linear-gradient(180deg, var(--playwright-bg) 0%, var(--bg-white) 100%);
+        }
+
+        .score-card.cypress.winner {
+            border-color: var(--cypress-color);
+            background: linear-gradient(180deg, var(--cypress-bg) 0%, var(--bg-white) 100%);
+        }
+
+        .score-card.webdriverio.winner {
+            border-color: var(--webdriverio-color);
+            background: linear-gradient(180deg, var(--webdriverio-bg) 0%, var(--bg-white) 100%);
+        }
+
+        .score-card.winner::after {
+            content: '✓ RECOMMENDED';
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .score-card.selenium.winner::after {
+            background: var(--selenium-bg);
+            color: var(--selenium-color);
+        }
+
+        .score-card.playwright.winner::after {
+            background: var(--playwright-bg);
+            color: var(--playwright-color);
+        }
+
+        .score-card.cypress.winner::after {
+            background: var(--cypress-bg);
+            color: var(--cypress-color);
+        }
+
+        .score-card.webdriverio.winner::after {
+            background: var(--webdriverio-bg);
+            color: var(--webdriverio-color);
+        }
+
+        .score-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .score-logo {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: 70%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .score-card.selenium .score-logo {
+            background-color: var(--selenium-bg);
+            border: 2px solid var(--selenium-border);
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='-6.5 0 269 269' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M234.15 0c.66-.04 1.28.3 1.6.87.33.57.3 1.28-.07 1.82l-66.3 90.06c-.49.55-1.18.86-1.92.86-.73 0-1.43-.31-1.92-.86l-23.37-26.06c-.57-.59-1.38-.89-2.2-.82-.82.07-1.56.52-2.02 1.2l-14.18 18.01c-.45 1.01-.3 2.19.38 3.07l42.15 43.69c.49.55 1.18.86 1.92.86.73 0 1.43-.31 1.92-.86l82.78-93.12c.49-.53 1.24-.7 1.92-.45.67.25 1.12.88 1.15 1.6v226.48c.03.52-.16 1.02-.53 1.39-.37.37-.87.56-1.39.53H1.92c-.52.03-1.02-.16-1.39-.53-.37-.37-.56-.87-.53-1.39V1.92c-.03-.52.16-1.02.53-1.39.37-.37.87-.56 1.39-.53h232.23zm-65.15 152.91c-11.41-.2-22.4 4.27-30.44 12.37-8.03 8.1-12.4 19.14-12.1 30.55 0 26.44 19.16 43.3 44.07 43.3 11.53.29 22.84-3.21 32.19-9.96.87-.79 1.03-2.09.38-3.07l-6.9-10.35c-.77-.89-2.09-1.05-3.06-.38-6 4.09-13.05 6.36-20.31 6.51-13.41 0-21.84-8.43-23.38-18.39.03-.41.36-.74.77-.77h57.87c1.23-.08 2.22-1.07 2.3-2.3v-2.3c0-26.83-16.86-45.22-41.39-45.21zm-57.1-14.56c-11.64-9.51-26.37-14.42-41.39-13.79-26.06 0-42.15 15.33-42.15 33.72 0 41.77 63.62 28.36 63.62 47.9 0 6.13-6.13 12.26-19.16 12.26-12.38.1-24.31-4.57-33.34-13.03-.54-.5-1.27-.75-2-.67-.73.07-1.4.46-1.83 1.06l-9.96 13.8c-.65.98-.49 2.28.38 3.07 10.35 9.58 24.91 16.1 45.22 16.1 29.89 0 44.45-15.33 45.22-35.26 0-41.39-63.61-29.52-63.61-47.13 0-6.51 5.75-11.11 15.71-11.11 10.98-.15 21.68 3.5 30.27 10.35.51.41 1.16.6 1.81.53.65-.07 1.24-.4 1.64-.92l9.96-13.41c.41-.51.6-1.16.53-1.81-.07-.65-.4-1.24-.92-1.64zm57.49 31.42c10.42-.58 19.42 7.23 20.31 17.63-.03.41-.36.74-.77.77h-39.09c-.41-.03-.74-.36-.77-.77 1.28-10.2 10.04-17.8 20.32-17.63z' fill='%2343B02A'/%3E%3C/svg%3E");
+        }
+
+        .score-card.playwright .score-logo {
+            background-color: var(--playwright-bg);
+            border: 2px solid var(--playwright-border);
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M136.444 221.556C123.558 225.213 115.104 231.625 109.535 238.032C114.869 233.364 122.014 229.08 131.652 226.348C141.51 223.554 149.92 223.574 156.869 224.915V219.481C150.941 218.939 144.145 219.371 136.444 221.556ZM108.946 175.876L61.0895 188.484C61.0895 188.484 61.9617 189.716 63.5767 191.36L104.153 180.668C104.153 180.668 103.578 188.077 98.5847 194.705C108.03 187.559 108.946 175.876 108.946 175.876ZM149.005 288.347C81.6582 306.486 46.0272 228.438 35.2396 187.928C30.2556 169.229 28.0799 155.067 27.5 145.928C27.4377 144.979 27.4665 144.179 27.5336 143.446C24.04 143.657 22.3674 145.473 22.7077 150.721C23.2876 159.855 25.4633 174.016 30.4473 192.721C41.2301 233.225 76.8659 311.273 144.213 293.134C158.872 289.185 169.885 281.992 178.152 272.81C170.532 279.692 160.995 285.112 149.005 288.347ZM161.661 128.11V132.903H188.077C187.535 131.206 186.989 129.677 186.447 128.11H161.661Z' fill='%232D4552'/%3E%3Cpath d='M161.661 262.296V239.863L99.3324 257.537C99.3324 257.537 103.938 230.777 136.444 221.556C146.302 218.762 154.713 218.781 161.661 220.123V128.11H192.869C189.471 117.61 186.184 109.526 183.423 103.909C178.856 94.612 174.174 100.775 163.545 109.665C156.059 115.919 137.139 129.261 108.668 136.933C80.1966 144.61 57.179 142.574 47.5752 140.911C33.9601 138.562 26.8387 135.572 27.5049 145.928C28.0847 155.062 30.2605 169.224 35.2445 187.928C46.0272 228.433 81.663 306.481 149.01 288.342C166.602 283.602 179.019 274.233 187.626 262.291H161.661V262.296ZM61.0848 188.484L108.946 175.876C108.946 175.876 107.551 194.288 89.6087 199.018C71.6614 203.743 61.0848 188.484 61.0848 188.484Z' fill='%23E2574C'/%3E%3Cpath d='M341.786 129.174C329.345 131.355 299.498 134.072 262.612 124.185C225.716 114.304 201.236 97.0224 191.537 88.8994C177.788 77.3834 171.74 69.3802 165.788 81.4857C160.526 92.163 153.797 109.54 147.284 133.866C133.171 186.543 122.623 297.706 209.867 321.098C297.093 344.47 343.53 242.92 357.644 190.238C364.157 165.917 367.013 147.5 367.799 135.625C368.695 122.173 359.455 126.078 341.786 129.174ZM166.497 172.756C166.497 172.756 180.246 151.372 203.565 158C226.899 164.628 228.706 190.425 228.706 190.425L166.497 172.756ZM223.42 268.713C182.403 256.698 176.077 223.99 176.077 223.99L286.262 254.796C286.262 254.791 264.021 280.578 223.42 268.713ZM262.377 201.495C262.377 201.495 276.107 180.126 299.422 186.773C322.736 193.411 324.572 219.208 324.572 219.208L262.377 201.495Z' fill='%232EAD33'/%3E%3C/svg%3E");
+        }
+
+        .score-card.cypress .score-logo {
+            background-color: var(--cypress-bg);
+            border: 2px solid var(--cypress-border);
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='128' cy='128' r='128' fill='%235C5C5E'/%3E%3Cpath d='M192.035 181.07c-4.386 13.597-10.965 23.684-20.176 31.14-9.21 7.457-21.49 11.404-36.84 12.72l-3.07-20.176c10.088-1.316 17.544-3.509 22.369-7.018 1.754-1.316 5.263-5.263 5.263-5.263l-36.404-116.667h30.263l21.053 87.28 22.368-87.28h29.386l-34.21 105.263zm-105.702-109.21c7.018 0 13.597.877 18.86 3.07 5.702 2.193 10.965 5.263 16.228 9.649l-12.28 16.667c-3.51-2.632-7.018-4.386-10.088-5.702-3.07-1.316-7.018-1.754-10.526-1.754-14.912 0-22.369 11.404-22.369 34.65 0 11.842 1.755 20.175 5.702 25 3.948 5.263 9.21 7.456 16.667 7.456 3.509 0 7.018-.439 10.088-1.754 3.07-1.316 6.579-3.07 10.965-5.702l12.28 17.544c-10.087 8.333-21.49 12.28-34.648 12.28-10.527 0-19.299-2.192-27.193-6.578-7.456-4.386-13.597-10.965-17.544-19.299-3.948-8.333-6.14-17.982-6.14-29.386 0-10.965 2.192-21.052 6.14-29.386 3.947-8.772 10.087-15.35 17.543-20.175 7.457-3.948 16.228-6.58 26.316-6.58z' fill='%23fff'/%3E%3C/svg%3E");
+        }
+
+        .score-card.webdriverio .score-logo {
+            background-color: var(--webdriverio-bg);
+            border: 2px solid var(--webdriverio-border);
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Crect fill='%23EA5906' width='64' height='64' rx='5'/%3E%3Cpath d='M8 16v32H6V16h2zm35 0c8.837 0 16 7.163 16 16s-7.163 16-16 16-16-7.163-16-16 7.163-16 16-16zm-16 0L14.106 48H12L24.894 16H27zm16 2c-7.732 0-14 6.268-14 14s6.268 14 14 14 14-6.268 14-14-6.268-14-14-14z' fill='%23fff'/%3E%3C/svg%3E");
+        }
+
+        .score-name {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .score-card.selenium .score-name { color: var(--selenium-color); }
+        .score-card.playwright .score-name { color: var(--playwright-color); }
+        .score-card.cypress .score-name { color: var(--cypress-color); }
+        .score-card.webdriverio .score-name { color: var(--webdriverio-color); }
+
+        .score-value {
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .score-card.selenium .score-value { color: var(--selenium-color); }
+        .score-card.playwright .score-value { color: var(--playwright-color); }
+        .score-card.cypress .score-value { color: var(--cypress-color); }
+        .score-card.webdriverio .score-value { color: var(--webdriverio-color); }
+
+        .score-label {
+            font-size: 13px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Detection Card */
+        .detection-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .detection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .detection-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
+
+        .detection-item:hover {
+            border-color: var(--sh-orange);
+            background: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .detection-icon {
+            font-size: 24px;
+        }
+
+        .detection-info {
+            flex: 1;
+        }
+
+        .detection-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .detection-status {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .detection-status.detected { color: var(--sh-green); }
+        .detection-status.not-detected { color: var(--text-light); }
+        .detection-status.warning { color: var(--sh-orange); }
+
+        /* Analysis Grid */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .analysis-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .analysis-card:hover {
+            border-color: var(--sh-purple);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .analysis-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: var(--sh-purple-light);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .analysis-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .analysis-scores {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .analysis-score {
+            flex: 1;
+            padding: 16px;
+            background: var(--bg-light);
+            border-radius: var(--radius-sm);
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .analysis-score-label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .analysis-score-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .analysis-score.selenium .analysis-score-value { color: var(--selenium-color); }
+        .analysis-score.playwright .analysis-score-value { color: var(--playwright-color); }
+        .analysis-score.cypress .analysis-score-value { color: var(--cypress-color); }
+        .analysis-score.webdriverio .analysis-score-value { color: var(--webdriverio-color); }
+
+        .analysis-details {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .analysis-evidence {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 12px 14px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-light);
+            margin-bottom: 16px;
+            word-break: break-all;
+        }
+
+        .analysis-winner {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .analysis-winner.selenium {
+            background: var(--selenium-bg);
+            color: var(--selenium-color);
+            border: 1px solid var(--selenium-border);
+        }
+
+        .analysis-winner.playwright {
+            background: var(--playwright-bg);
+            color: var(--playwright-color);
+            border: 1px solid var(--playwright-border);
+        }
+
+        .analysis-winner.cypress {
+            background: var(--cypress-bg);
+            color: var(--cypress-color);
+            border: 1px solid var(--cypress-border);
+        }
+
+        .analysis-winner.webdriverio {
+            background: var(--webdriverio-bg);
+            color: var(--webdriverio-color);
+            border: 1px solid var(--webdriverio-border);
+        }
+
+        .analysis-winner.tie {
+            background: var(--bg-light);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Report Card */
+        .report-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .report-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .export-btn {
+            padding: 12px 24px;
+            background: var(--sh-orange);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .export-btn:hover {
+            background: var(--sh-orange-hover);
+            transform: translateY(-1px);
+        }
+
+        .report-content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.9;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .report-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .report-content::-webkit-scrollbar-track {
+            background: var(--bg-input);
+            border-radius: 3px;
+        }
+
+        .report-content::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: var(--sh-orange);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Header -->
+        <header class="header">
+            <span class="badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+                Real Website Analysis
+            </span>
+            <h1 class="title">
+                Automation <span class="title-highlight">Tool Analyzer</span>
+            </h1>
+            <p class="subtitle">
+                Enter a URL to <strong>analyze</strong> the website's HTML and get a data-driven 
+                recommendation on whether to use <strong>Selenium</strong> or <strong>Playwright</strong>
+            </p>
+        </header>
+
+        <!-- Input Card -->
+        <section class="input-card">
+            <div class="input-row">
+                <div class="url-wrapper">
+                    <input type="url" class="url-input" id="urlInput" 
+                           placeholder="Enter website URL (e.g., https://example.com)" />
+                </div>
+                <button class="analyze-btn" id="analyzeBtn" onclick="startAnalysis()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    <span class="btn-text">Analyze Website</span>
+                </button>
+            </div>
+            
+            <!-- Tool Selection -->
+            <div class="tool-selection">
+                <span class="tool-selection-label">Select tools to compare:</span>
+                <div class="tool-checkboxes">
+                    <div class="tool-checkbox selected" data-tool="selenium" onclick="toggleTool(this, event)">
+                        <input type="checkbox" checked>
+                        <span class="tool-checkbox-indicator">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        <span class="tool-checkbox-logo selenium"></span>
+                        <span class="tool-checkbox-name">Selenium</span>
+                    </div>
+                    <div class="tool-checkbox selected" data-tool="playwright" onclick="toggleTool(this, event)">
+                        <input type="checkbox" checked>
+                        <span class="tool-checkbox-indicator">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        <span class="tool-checkbox-logo playwright"></span>
+                        <span class="tool-checkbox-name">Playwright</span>
+                    </div>
+                    <div class="tool-checkbox" data-tool="cypress" onclick="toggleTool(this, event)">
+                        <input type="checkbox">
+                        <span class="tool-checkbox-indicator">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        <span class="tool-checkbox-logo cypress"></span>
+                        <span class="tool-checkbox-name">Cypress</span>
+                    </div>
+                    <div class="tool-checkbox" data-tool="webdriverio" onclick="toggleTool(this, event)">
+                        <input type="checkbox">
+                        <span class="tool-checkbox-indicator">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        <span class="tool-checkbox-logo webdriverio"></span>
+                        <span class="tool-checkbox-name">WebdriverIO</span>
+                    </div>
+                </div>
+                <p class="tool-selection-hint">Select at least 2 tools to compare. Default: Selenium vs Playwright</p>
+            </div>
+        </section>
+
+        <!-- Manual HTML Input Section - Always Visible -->
+        <section class="manual-section" id="manualSection">
+            <div class="manual-toggle" onclick="toggleManualInput()">
+                <div class="manual-toggle-header">
+                    <div class="manual-toggle-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    </div>
+                    <div class="manual-toggle-text">
+                        <span class="manual-toggle-title">Paste HTML Source Code</span>
+                        <span class="manual-toggle-subtitle">For sites with login, firewall, or bot protection</span>
+                    </div>
+                </div>
+                <div class="manual-toggle-arrow" id="manualArrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+            <div class="manual-content" id="manualContent">
+                <div class="manual-instructions">
+                    <h4>How to get the HTML source:</h4>
+                    <ol>
+                        <li>Open the website in your browser (login if required)</li>
+                        <li>Right-click anywhere and select <strong>"View Page Source"</strong> (or press <kbd>Ctrl+U</kbd> / <kbd>Cmd+U</kbd>)</li>
+                        <li>Select all (<kbd>Ctrl+A</kbd> / <kbd>Cmd+A</kbd>) and copy (<kbd>Ctrl+C</kbd> / <kbd>Cmd+C</kbd>)</li>
+                        <li>Paste the HTML below and click "Analyze"</li>
+                    </ol>
+                </div>
+                <textarea class="html-textarea" id="manualHtmlInput" placeholder="Paste the HTML source code here..."></textarea>
+                <button class="manual-analyze-btn" onclick="analyzeManualHtml()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    Analyze Pasted HTML
+                </button>
+            </div>
+        </section>
+
+        <!-- Loading Section -->
+        <section class="loading-section" id="loadingSection">
+            <div class="loading-spinner"></div>
+            <div class="loading-title">Analyzing Website...</div>
+            <div class="loading-step" id="loadingStep">Initializing...</div>
+            <div class="loading-log" id="loadingLog"></div>
+        </section>
+
+        <!-- Error Section -->
+        <section class="error-section" id="errorSection">
+            <div class="error-header">
+                <div class="error-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <div>
+                    <h3 class="error-title">Unable to Fetch Website</h3>
+                </div>
+            </div>
+            <p class="error-message" id="errorMessage">
+                The website could not be fetched. This usually happens when the site blocks automated requests or has strict security policies.
+            </p>
+            <div class="error-suggestions">
+                <h4>Why this might happen:</h4>
+                <ul>
+                    <li>The website has <strong>bot protection</strong> (Cloudflare, Akamai, etc.)</li>
+                    <li>The website blocks <strong>cross-origin requests</strong> (CORS)</li>
+                    <li>The website requires <strong>authentication</strong> or has a paywall</li>
+                    <li>The URL is <strong>incorrect</strong> or the website is down</li>
+                    <li>The website uses <strong>JavaScript rendering</strong> (SPA without SSR)</li>
+                </ul>
+            </div>
+            <div>
+                <button class="retry-btn" onclick="retryAnalysis()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Try Again
+                </button>
+                <button class="manual-analyze-btn" onclick="openManualInput()" style="margin-top: 0;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    Paste HTML Instead
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection">
+            
+            <!-- Hero Card -->
+            <div class="hero-card" id="heroCard">
+                <span class="hero-label">Recommended Tool</span>
+                <div class="hero-tool" id="heroTool">Playwright</div>
+                <div class="hero-confidence">
+                    Confidence Score: <strong id="heroConfidence">85%</strong>
+                </div>
+                <div class="confidence-bar">
+                    <div class="confidence-fill" id="confidenceFill"></div>
+                </div>
+                <p class="hero-summary" id="heroSummary"></p>
+            </div>
+
+            <!-- Score Cards - Dynamic -->
+            <div class="score-grid" id="scoreGrid"></div>
+
+            <!-- Detection Summary -->
+            <div class="detection-card">
+                <h2 class="section-title">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+                    What We Detected
+                </h2>
+                <div class="detection-grid" id="detectionGrid"></div>
+            </div>
+
+            <!-- Analysis Cards -->
+            <div class="analysis-grid" id="analysisGrid"></div>
+
+            <!-- Report -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h2 class="section-title" style="margin-bottom: 0;">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Detailed Analysis Report
+                    </h2>
+                    <button class="export-btn" onclick="exportReport()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Export Report</span>
+                    </button>
+                </div>
+                <div class="report-content" id="reportContent"></div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">
+                <svg width="28" height="28" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse fill="#fff" cx="23.95" cy="24.06" rx="22.03" ry="22.06"/>
+                    <path fill="#f29a00" d="M24,1.06A22.9,22.9,0,0,0,9.72,6l-.05,0L9,6.6l-.35.3-.33.3-.61.59,0,0A23,23,0,0,0,8,40.66v-.08A23,23,0,1,0,24,1.06Zm0,44.23A21.1,21.1,0,0,1,9.51,39.56l20.12-20c-2.7-1.15-4,1.29-5.76,2.55-.74-.76-1.44-1.42-2.06-2.14a2.19,2.19,0,0,0-1.89-.78c-2.64,0-5.27,0-7.91,0a7.08,7.08,0,0,0-.79.09l-.17.31L19,27.37,8.15,38.16,8,38V17.16A3.07,3.07,0,0,1,9.43,14.6L22.27,6.3a3.55,3.55,0,0,1,3.86,0L39,14.6a3.07,3.07,0,0,1,1.47,2.56v20.2A21.13,21.13,0,0,1,24,45.29Z"/>
+                    <path fill="#1d2a35" d="M40.91,15a6.57,6.57,0,0,1-1.66-1.1l-21,20.79a2.85,2.85,0,0,0,2.63-.22,17,17,0,0,0,2.93-2.61c.89,1,1.54,1.61,2.12,2.32a2.4,2.4,0,0,0,2.09.88c2.59-.06,5.19,0,7.79,0,.27,0,.54,0,1.09-.11L28.9,27C32.71,23.19,37.09,18.85,40.91,15Z"/>
+                </svg>
+                <span style="font-weight: 700; color: var(--text-dark);">SelectorsHub</span>
+            </div>
+            <p>Part of the <a href="https://selectorshub.com">SelectorsHub</a> Ecosystem</p>
+            <p style="margin-top: 8px;">Real HTML Analysis &bull; Built for QA Community</p>
+        </footer>
+    </div>
+
+    <script>
+        // =====================================================
+        // REAL WEBSITE ANALYZER - NO API KEY REQUIRED
+        // =====================================================
+
+        let analysisData = null;
+        let lastUrl = '';
+        let selectedTools = ['selenium', 'playwright']; // Default selected tools
+
+        const TOOL_CONFIG = {
+            selenium: { name: 'Selenium', logo: 'Se', color: '#43b02a' },
+            playwright: { name: 'Playwright', logo: 'Pw', color: '#2d7ff9' },
+            cypress: { name: 'Cypress', logo: 'Cy', color: '#00BF88' },
+            webdriverio: { name: 'WebdriverIO', logo: 'Wd', color: '#EA5906' }
+        };
+
+        function toggleTool(element, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            const tool = element.dataset.tool;
+            const checkbox = element.querySelector('input');
+            
+            if (element.classList.contains('selected')) {
+                // Check if we have more than 2 tools selected
+                if (selectedTools.length <= 2) {
+                    alert('Please select at least 2 tools to compare.');
+                    return;
+                }
+                element.classList.remove('selected');
+                checkbox.checked = false;
+                selectedTools = selectedTools.filter(t => t !== tool);
+            } else {
+                element.classList.add('selected');
+                checkbox.checked = true;
+                if (!selectedTools.includes(tool)) {
+                    selectedTools.push(tool);
+                }
+            }
+            console.log('Selected tools:', selectedTools);
+        }
+
+        function getSelectedTools() {
+            return selectedTools;
+        }
+
+        function toggleManualInput() {
+            const content = document.getElementById('manualContent');
+            const arrow = document.getElementById('manualArrow');
+            content.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
+
+        function openManualInput() {
+            const content = document.getElementById('manualContent');
+            const arrow = document.getElementById('manualArrow');
+            content.classList.add('open');
+            arrow.classList.add('open');
+            document.getElementById('manualSection').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                document.getElementById('manualHtmlInput').focus();
+            }, 300);
+        }
+
+        // Extended list of CORS proxies with different approaches
+        const CORS_PROXIES = [
+            // Primary proxies
+            (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+            (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+            (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+            // Additional proxies
+            (url) => `https://proxy.cors.sh/${url}`,
+            (url) => `https://cors-anywhere.herokuapp.com/${url}`,
+            (url) => `https://thingproxy.freeboard.io/fetch/${url}`,
+            (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+            // Backup proxies
+            (url) => `https://crossorigin.me/${url}`,
+            (url) => `https://cors-proxy.htmldriven.com/?url=${encodeURIComponent(url)}`
+        ];
+
+        const ANALYSIS_CONFIG = {
+            shadowDom: { name: 'Shadow DOM & Web Components', icon: 'SD', weight: 18 },
+            iframes: { name: 'iFrame Handling', icon: 'IF', weight: 12 },
+            frameworks: { name: 'Modern JS Frameworks', icon: 'FW', weight: 15 },
+            dynamicContent: { name: 'Dynamic Content & AJAX', icon: 'DC', weight: 14 },
+            selectorComplexity: { name: 'Selector Complexity', icon: 'SC', weight: 12 },
+            networkRequirements: { name: 'Network Interception', icon: 'NW', weight: 10 },
+            authentication: { name: 'Authentication Flows', icon: 'AU', weight: 8 },
+            fileUploads: { name: 'File Uploads', icon: 'FU', weight: 6 },
+            legacySupport: { name: 'Legacy Browser Support', icon: 'LG', weight: 5 }
+        };
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('loadingLog');
+            const icons = { success: '[OK]', warning: '[!]', info: '[i]', error: '[X]' };
+            logDiv.innerHTML += `<div class="log-entry"><span>${icons[type]}</span><span class="log-${type}">${message}</span></div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function updateStep(step) {
+            document.getElementById('loadingStep').textContent = step;
+        }
+
+        async function fetchWithProxy(url) {
+            const timeout = 15000; // 15 second timeout per proxy
+            let lastError = null;
+            
+            for (let i = 0; i < CORS_PROXIES.length; i++) {
+                try {
+                    const proxyUrl = CORS_PROXIES[i](url);
+                    log(`Trying proxy ${i + 1}/${CORS_PROXIES.length}...`, 'info');
+                    
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), timeout);
+                    
+                    const response = await fetch(proxyUrl, { 
+                        headers: { 
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                        },
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (response.ok) {
+                        let html = await response.text();
+                        
+                        // Handle allorigins.win /get endpoint which returns JSON
+                        if (proxyUrl.includes('allorigins.win/get')) {
+                            try {
+                                const jsonData = JSON.parse(html);
+                                html = jsonData.contents || html;
+                            } catch (e) {
+                                // Not JSON, use as-is
+                            }
+                        }
+                        
+                        // Check if we got valid HTML
+                        if (html && html.length > 500 && (html.includes('<html') || html.includes('<head') || html.includes('<body') || html.includes('<!DOCTYPE'))) {
+                            log(`Successfully fetched ${(html.length / 1024).toFixed(1)}KB of HTML`, 'success');
+                            return html;
+                        } else if (html && html.length > 100) {
+                            // Might be partial HTML or different format
+                            log(`Received ${(html.length / 1024).toFixed(1)}KB (may be partial)`, 'warning');
+                            if (i === CORS_PROXIES.length - 1) {
+                                // Last proxy, use what we have
+                                return html;
+                            }
+                        } else {
+                            log(`Proxy ${i + 1} returned insufficient data`, 'warning');
+                        }
+                    } else {
+                        log(`Proxy ${i + 1} returned status ${response.status}`, 'warning');
+                    }
+                } catch (e) {
+                    if (e.name === 'AbortError') {
+                        log(`Proxy ${i + 1} timed out`, 'warning');
+                    } else {
+                        log(`Proxy ${i + 1} failed: ${e.message.substring(0, 50)}`, 'warning');
+                    }
+                    lastError = e;
+                }
+            }
+            
+            throw new Error('Unable to fetch website. The site may be blocking automated requests, using bot protection, or requires authentication.');
+        }
+
+        // =====================================================
+        // ANALYSIS FUNCTIONS
+        // =====================================================
+
+        function analyzeShadowDOM(html) {
+            const attachShadow = (html.match(/attachShadow/gi) || []).length;
+            const shadowRoot = (html.match(/shadowRoot/gi) || []).length;
+            const customElements = (html.match(/customElements\.define/gi) || []).length;
+            const customTags = html.match(/<([a-z]+-[a-z-]+)[^>]*>/gi) || [];
+            const uniqueTags = [...new Set(customTags.map(t => t.match(/<([a-z-]+)/i)?.[1]))].filter(Boolean);
+            
+            const total = attachShadow + shadowRoot + customElements + uniqueTags.length;
+            const detected = total > 0;
+            
+            return {
+                detected,
+                count: total,
+                evidence: { attachShadow, shadowRoot, customElements, customTags: uniqueTags.slice(0, 5) },
+                severity: total > 10 ? 'high' : total > 3 ? 'medium' : 'low',
+                scores: {
+                    selenium: detected ? (total > 5 ? 3 : 5) : 8,
+                    playwright: detected ? 9 : 8,
+                    cypress: detected ? (total > 5 ? 4 : 6) : 8,
+                    webdriverio: detected ? (total > 5 ? 4 : 6) : 8
+                },
+                getDetails: function(tools) {
+                    if (!detected) return 'No Shadow DOM detected. All selected tools work equally well here.';
+                    let details = `Found ${uniqueTags.length} custom elements, ${attachShadow} shadow attachments. `;
+                    if (tools.includes('playwright')) {
+                        details += "Playwright's >> piercing selector handles this natively.";
+                    } else if (tools.includes('selenium') && tools.includes('cypress')) {
+                        details += "Both Selenium and Cypress have limited Shadow DOM support.";
+                    } else if (tools.includes('selenium')) {
+                        details += "Selenium requires JavaScript execution to pierce Shadow DOM.";
+                    } else if (tools.includes('cypress')) {
+                        details += "Cypress has limited Shadow DOM support via cy.shadow().";
+                    } else if (tools.includes('webdriverio')) {
+                        details += "WebdriverIO requires shadow$ commands for Shadow DOM.";
+                    }
+                    return details;
+                }
+            };
+        }
+
+        function analyzeIframes(html) {
+            const iframes = html.match(/<iframe[^>]*>/gi) || [];
+            const crossOrigin = iframes.filter(i => /src=["']https?:\/\//i.test(i)).length;
+            const detected = iframes.length > 0;
+            
+            return {
+                detected,
+                count: iframes.length,
+                evidence: { total: iframes.length, crossOrigin, nested: iframes.length > 2 },
+                severity: iframes.length > 3 ? 'high' : iframes.length > 0 ? 'medium' : 'low',
+                scores: {
+                    selenium: detected ? (iframes.length > 2 ? 5 : 6) : 8,
+                    playwright: detected ? 9 : 8,
+                    cypress: detected ? (crossOrigin > 0 ? 3 : 5) : 8,
+                    webdriverio: detected ? (iframes.length > 2 ? 5 : 6) : 8
+                },
+                getDetails: function(tools) {
+                    if (!detected) return 'No iframes detected.';
+                    let details = `Found ${iframes.length} iframes (${crossOrigin} cross-origin). `;
+                    if (tools.includes('playwright') && tools.includes('cypress')) {
+                        details += "Playwright's frameLocator() is cleanest. Cypress has cross-origin limitations.";
+                    } else if (tools.includes('playwright') && tools.includes('selenium')) {
+                        details += "Playwright's frameLocator() is cleaner than Selenium's switchTo().";
+                    } else if (tools.includes('playwright')) {
+                        details += "Playwright's frameLocator() handles iframes elegantly.";
+                    } else if (tools.includes('cypress') && tools.includes('selenium')) {
+                        details += "Selenium's switchTo() is more flexible than Cypress for cross-origin iframes.";
+                    } else if (tools.includes('cypress')) {
+                        details += "Cypress has limitations with cross-origin iframes.";
+                    } else if (tools.includes('selenium') && tools.includes('webdriverio')) {
+                        details += "Both use switchTo().frame() for iframe handling.";
+                    } else if (tools.includes('selenium')) {
+                        details += "Selenium uses switchTo().frame() for iframe handling.";
+                    } else if (tools.includes('webdriverio')) {
+                        details += "WebdriverIO uses switchToFrame() for iframe handling.";
+                    }
+                    return details;
+                }
+            };
+        }
+
+        function analyzeFrameworks(html) {
+            const frameworks = {
+                react: /data-reactroot|_reactRootContainer|__REACT|react-app/i.test(html),
+                angular: /ng-version|ng-app|\[ngClass\]|_ngcontent|angular/i.test(html),
+                vue: /data-v-[a-f0-9]|__VUE__|v-bind|vue-app/i.test(html),
+                nextjs: /__NEXT_DATA__|_next\/static|next\.js/i.test(html),
+                nuxt: /__NUXT__|_nuxt\//i.test(html),
+                svelte: /svelte-[a-z0-9]/i.test(html),
+                jquery: /jquery|jQuery/i.test(html),
+                ember: /ember|data-ember/i.test(html),
+                backbone: /backbone/i.test(html)
+            };
+            
+            const detected = Object.entries(frameworks).filter(([_, v]) => v).map(([k]) => k);
+            const isModern = detected.some(f => ['react', 'angular', 'vue', 'nextjs', 'nuxt', 'svelte'].includes(f));
+            const isReactOrVue = detected.some(f => ['react', 'vue', 'nextjs', 'nuxt'].includes(f));
+            
+            return {
+                detected: detected.length > 0,
+                frameworks: detected,
+                evidence: { detected },
+                severity: isModern ? 'high' : detected.length > 0 ? 'medium' : 'low',
+                scores: {
+                    selenium: isModern ? 5 : 7,
+                    playwright: isModern ? 9 : 7,
+                    cypress: isReactOrVue ? 9 : (isModern ? 8 : 7), // Cypress excels with React/Vue
+                    webdriverio: isModern ? 6 : 7
+                },
+                getDetails: function(tools) {
+                    if (detected.length === 0) return 'No major frameworks detected. Traditional HTML page.';
+                    let details = `Detected: ${detected.map(f => f.charAt(0).toUpperCase() + f.slice(1)).join(', ')}. `;
+                    const hasPlaywright = tools.includes('playwright');
+                    const hasCypress = tools.includes('cypress');
+                    const hasSelenium = tools.includes('selenium');
+                    const hasWebdriverio = tools.includes('webdriverio');
+                    
+                    if (isReactOrVue) {
+                        if (hasCypress && hasPlaywright) {
+                            details += 'Cypress and Playwright excel with React/Vue.';
+                        } else if (hasCypress) {
+                            details += 'Cypress excels with React/Vue apps.';
+                        } else if (hasPlaywright) {
+                            details += 'Playwright handles React/Vue state changes well.';
+                        } else if (hasSelenium) {
+                            details += 'Selenium requires explicit waits for framework updates.';
+                        }
+                    } else if (isModern) {
+                        if (hasPlaywright) {
+                            details += 'Playwright auto-waits for framework state updates.';
+                        } else if (hasCypress) {
+                            details += 'Cypress has good auto-retry for modern frameworks.';
+                        } else if (hasSelenium || hasWebdriverio) {
+                            details += 'Requires careful wait strategies for dynamic updates.';
+                        }
+                    }
+                    return details;
+                }
+            };
+        }
+
+        function analyzeDynamicContent(html) {
+            const patterns = {
+                fetch: (html.match(/fetch\s*\(/gi) || []).length,
+                xhr: (html.match(/XMLHttpRequest|\.ajax\(/gi) || []).length,
+                axios: (html.match(/axios\./gi) || []).length,
+                websocket: (html.match(/WebSocket|socket\.io/gi) || []).length,
+                async: (html.match(/async\s+function|await\s+/gi) || []).length,
+                promises: (html.match(/\.then\s*\(|Promise\./gi) || []).length,
+                observers: (html.match(/IntersectionObserver|MutationObserver/gi) || []).length,
+                lazy: (html.match(/loading=["']lazy["']|data-src|data-lazy/gi) || []).length
+            };
+            
+            const total = Object.values(patterns).reduce((a, b) => a + b, 0);
+            
+            return {
+                detected: total > 5,
+                count: total,
+                evidence: patterns,
+                severity: total > 20 ? 'high' : total > 5 ? 'medium' : 'low',
+                scores: {
+                    selenium: total > 10 ? 4 : total > 5 ? 6 : 8,
+                    playwright: total > 5 ? 9 : 8,
+                    cypress: total > 5 ? 9 : 8, // Cypress has excellent auto-waiting
+                    webdriverio: total > 10 ? 5 : total > 5 ? 6 : 8
+                },
+                getDetails: function(tools) {
+                    if (total <= 5) return 'Low dynamic content. All selected tools work well.';
+                    let details = `Heavy dynamic content: ${patterns.fetch + patterns.xhr + patterns.axios} API calls, ${patterns.async} async ops${patterns.websocket ? ', WebSockets' : ''}. `;
+                    const hasPlaywright = tools.includes('playwright');
+                    const hasCypress = tools.includes('cypress');
+                    const hasSelenium = tools.includes('selenium');
+                    
+                    if (hasPlaywright && hasCypress) {
+                        details += 'Playwright and Cypress handle auto-waiting well.';
+                    } else if (hasPlaywright) {
+                        details += 'Playwright handles auto-waiting excellently.';
+                    } else if (hasCypress) {
+                        details += 'Cypress has excellent auto-retry and waiting.';
+                    } else if (hasSelenium) {
+                        details += 'Selenium requires explicit waits for async content.';
+                    } else {
+                        details += 'Consider tools with strong auto-wait capabilities.';
+                    }
+                    return details;
+                }
+            };
+        }
+
+        function analyzeSelectorComplexity(html) {
+            const classMatches = html.match(/class=["'][^"']+["']/gi) || [];
+            const allClasses = classMatches.flatMap(c => (c.match(/class=["']([^"']+)["']/i)?.[1] || '').split(/\s+/));
+            
+            const dynamicPatterns = [/^[a-z]+_[a-f0-9]{5,}$/i, /^css-[a-z0-9]+$/i, /^sc-[a-z]+$/i, /^[a-z]+-[a-f0-9]{6,}$/i];
+            const dynamicClasses = allClasses.filter(c => dynamicPatterns.some(p => p.test(c)));
+            
+            const testIds = (html.match(/data-test(?:id)?=|data-cy=|data-automation=/gi) || []).length;
+            const ids = (html.match(/\sid=["'][^"']+["']/gi) || []).length;
+            
+            const ratio = allClasses.length > 0 ? dynamicClasses.length / allClasses.length : 0;
+            const complexity = ratio > 0.3 ? 'high' : ratio > 0.1 ? 'medium' : 'low';
+            const hasCyTestIds = (html.match(/data-cy=/gi) || []).length > 0;
+            
+            return {
+                detected: ratio > 0.1,
+                evidence: { total: allClasses.length, dynamic: dynamicClasses.length, ratio: (ratio * 100).toFixed(1) + '%', testIds, stableIds: ids, examples: dynamicClasses.slice(0, 3) },
+                severity: complexity,
+                scores: {
+                    selenium: testIds > 5 ? 8 : (complexity === 'high' ? 5 : 7),
+                    playwright: testIds > 5 ? 8 : (complexity === 'high' ? 7 : 7),
+                    cypress: hasCyTestIds ? 9 : (testIds > 5 ? 8 : (complexity === 'high' ? 6 : 7)), // Cypress uses data-cy
+                    webdriverio: testIds > 5 ? 8 : (complexity === 'high' ? 5 : 7)
+                },
+                getDetails: function(tools) {
+                    if (complexity !== 'high') return `Good selector stability: ${testIds} test IDs, ${ids} stable IDs.`;
+                    let details = `${(ratio * 100).toFixed(0)}% dynamic classes (${dynamicClasses.length}/${allClasses.length}). `;
+                    if (testIds > 0) {
+                        details += `Found ${testIds} test attributes.`;
+                        if (hasCyTestIds && tools.includes('cypress')) {
+                            details += ' data-cy attributes work great with Cypress.';
+                        }
+                    } else {
+                        if (tools.includes('cypress')) {
+                            details += 'Consider adding data-cy attributes for Cypress.';
+                        } else {
+                            details += 'Consider adding data-testid attributes.';
+                        }
+                    }
+                    return details;
+                }
+            };
+        }
+
+        function analyzeNetworkRequirements(html) {
+            const apiCalls = (html.match(/fetch\(|axios\.|\.ajax\(|XMLHttpRequest/gi) || []).length;
+            const graphql = /graphql|__typename/i.test(html);
+            const needsMocking = apiCalls > 5 || graphql;
+            
+            return {
+                detected: needsMocking,
+                evidence: { apiCalls, graphql },
+                severity: apiCalls > 10 ? 'high' : apiCalls > 3 ? 'medium' : 'low',
+                scores: {
+                    selenium: needsMocking ? 5 : 7,
+                    playwright: needsMocking ? 9 : 7,
+                    cypress: needsMocking ? 9 : 7, // Cypress has excellent network stubbing with cy.intercept()
+                    webdriverio: needsMocking ? 5 : 7
+                },
+                getDetails: function(tools) {
+                    if (!needsMocking) return 'Minimal network complexity.';
+                    let details = `Heavy API usage: ${apiCalls} calls${graphql ? ', GraphQL' : ''}. `;
+                    const hasPlaywright = tools.includes('playwright');
+                    const hasCypress = tools.includes('cypress');
+                    const hasSelenium = tools.includes('selenium');
+                    
+                    if (hasPlaywright && hasCypress) {
+                        details += 'Playwright route() and Cypress cy.intercept() make mocking easy.';
+                    } else if (hasPlaywright) {
+                        details += 'Playwright route() makes network mocking easy.';
+                    } else if (hasCypress) {
+                        details += 'Cypress cy.intercept() excels at network stubbing.';
+                    } else if (hasSelenium) {
+                        details += 'Selenium requires proxy setup for network mocking.';
+                    } else {
+                        details += 'Consider tools with built-in network interception.';
+                    }
+                    return details;
+                }
+            };
+        }
+
+        function analyzeAuthentication(html) {
+            const hasLogin = /login|sign.?in|log.?in/i.test(html);
+            const hasPassword = /type=["']password["']/i.test(html);
+            const hasOAuth = /oauth|openid|google.+sign|facebook.+login/i.test(html);
+            const hasCaptcha = /captcha|recaptcha|hcaptcha/i.test(html);
+            
+            return {
+                detected: hasLogin || hasPassword,
+                evidence: { login: hasLogin, oauth: hasOAuth, captcha: hasCaptcha },
+                severity: hasCaptcha ? 'high' : hasOAuth ? 'medium' : 'low',
+                scores: {
+                    selenium: hasCaptcha ? 4 : hasOAuth ? 6 : 7,
+                    playwright: hasCaptcha ? 5 : hasOAuth ? 8 : 8, // Playwright has storageState
+                    cypress: hasCaptcha ? 4 : hasOAuth ? 7 : 8, // Cypress has cy.session()
+                    webdriverio: hasCaptcha ? 4 : hasOAuth ? 6 : 7
+                },
+                getDetails: function(tools) {
+                    if (!hasLogin) return 'No authentication forms.';
+                    let details = `Auth detected: ${[hasOAuth && 'OAuth', hasCaptcha && 'CAPTCHA'].filter(Boolean).join(', ') || 'Basic'}. `;
+                    const hasPlaywright = tools.includes('playwright');
+                    const hasCypress = tools.includes('cypress');
+                    const hasSelenium = tools.includes('selenium');
+                    
+                    if (hasCaptcha) {
+                        details += 'CAPTCHA needs manual handling with all tools.';
+                    } else if (hasPlaywright && hasCypress) {
+                        details += 'Playwright storageState and Cypress cy.session() help with auth.';
+                    } else if (hasPlaywright) {
+                        details += 'Playwright storageState helps persist auth.';
+                    } else if (hasCypress) {
+                        details += 'Cypress cy.session() caches auth effectively.';
+                    } else if (hasSelenium) {
+                        details += 'Selenium requires manual cookie/session management.';
+                    }
+                    return details;
+                }
+            };
+        }
+
+        function analyzeFileUploads(html) {
+            const fileInputs = (html.match(/type=["']file["']/gi) || []).length;
+            const dropzone = /dropzone|drag.?drop|file.?upload/i.test(html);
+            
+            return {
+                detected: fileInputs > 0 || dropzone,
+                evidence: { fileInputs, dragDrop: dropzone },
+                severity: fileInputs > 0 ? 'medium' : 'low',
+                scores: {
+                    selenium: fileInputs > 0 ? 6 : 8,
+                    playwright: fileInputs > 0 ? 9 : 8, // setInputFiles() is clean
+                    cypress: fileInputs > 0 ? 7 : 8, // cy.selectFile() works well
+                    webdriverio: fileInputs > 0 ? 6 : 8
+                },
+                getDetails: function(tools) {
+                    if (fileInputs === 0 && !dropzone) return 'No file uploads.';
+                    let details = `${fileInputs} file input(s)${dropzone ? ' with drag-drop' : ''}. `;
+                    const hasPlaywright = tools.includes('playwright');
+                    const hasCypress = tools.includes('cypress');
+                    const hasSelenium = tools.includes('selenium');
+                    
+                    if (hasPlaywright && hasCypress) {
+                        details += "Playwright's setInputFiles() and Cypress cy.selectFile() are clean solutions.";
+                    } else if (hasPlaywright) {
+                        details += "Playwright's setInputFiles() handles uploads elegantly.";
+                    } else if (hasCypress) {
+                        details += "Cypress cy.selectFile() handles uploads well.";
+                    } else if (hasSelenium) {
+                        details += "Selenium uses sendKeys() to file inputs.";
+                    } else {
+                        details += "Most tools support file uploads via input elements.";
+                    }
+                    return details;
+                }
+            };
+        }
+
+        function analyzeLegacySupport(html) {
+            const ieCode = /<!--\[if|@cc_on/i.test(html);
+            const oldJquery = /jquery[.-]1\./i.test(html);
+            const legacy = /document\.all|attachEvent/i.test(html);
+            const needsLegacy = ieCode || oldJquery || legacy;
+            
+            return {
+                detected: needsLegacy,
+                evidence: { ieConditionals: ieCode, oldJquery, legacyPatterns: legacy },
+                severity: needsLegacy ? 'high' : 'low',
+                scores: {
+                    selenium: needsLegacy ? 9 : 7, // Best legacy support
+                    playwright: needsLegacy ? 5 : 8, // No IE support
+                    cypress: needsLegacy ? 4 : 7, // Chrome-focused, limited legacy
+                    webdriverio: needsLegacy ? 8 : 7 // Good legacy support via Selenium
+                },
+                getDetails: function(tools) {
+                    if (!needsLegacy) return 'Modern codebase. No legacy requirements.';
+                    let details = 'Legacy browser support detected. ';
+                    const hasPlaywright = tools.includes('playwright');
+                    const hasCypress = tools.includes('cypress');
+                    const hasSelenium = tools.includes('selenium');
+                    const hasWebdriverio = tools.includes('webdriverio');
+                    
+                    const supports = [];
+                    const noSupports = [];
+                    
+                    if (hasSelenium) supports.push('Selenium');
+                    if (hasWebdriverio) supports.push('WebdriverIO');
+                    if (hasPlaywright) noSupports.push('Playwright');
+                    if (hasCypress) noSupports.push('Cypress');
+                    
+                    if (supports.length > 0) {
+                        details += `${supports.join(' and ')} support${supports.length === 1 ? 's' : ''} IE and older browsers.`;
+                    }
+                    if (noSupports.length > 0) {
+                        details += ` ${noSupports.join(' and ')} do${noSupports.length === 1 ? 'es' : ''} not support IE.`;
+                    }
+                    return details;
+                }
+            };
+        }
+
+        // =====================================================
+        // MAIN ANALYSIS
+        // =====================================================
+
+        async function performAnalysis(html, url) {
+            const results = { url, timestamp: new Date().toISOString(), analyses: {}, selectedTools: getSelectedTools() };
+            
+            const analyzers = [
+                ['shadowDom', analyzeShadowDOM, 'Analyzing Shadow DOM...'],
+                ['iframes', analyzeIframes, 'Scanning for iFrames...'],
+                ['frameworks', analyzeFrameworks, 'Detecting frameworks...'],
+                ['dynamicContent', analyzeDynamicContent, 'Analyzing dynamic content...'],
+                ['selectorComplexity', analyzeSelectorComplexity, 'Evaluating selectors...'],
+                ['networkRequirements', analyzeNetworkRequirements, 'Checking network patterns...'],
+                ['authentication', analyzeAuthentication, 'Analyzing authentication...'],
+                ['fileUploads', analyzeFileUploads, 'Checking file uploads...'],
+                ['legacySupport', analyzeLegacySupport, 'Checking legacy requirements...']
+            ];
+
+            for (const [key, fn, step] of analyzers) {
+                updateStep(step);
+                log(step, 'info');
+                results.analyses[key] = fn(html);
+                await new Promise(r => setTimeout(r, 80));
+            }
+
+            // Calculate weighted scores for all tools
+            const toolScores = { selenium: 0, playwright: 0, cypress: 0, webdriverio: 0 };
+            let totalW = 0;
+            
+            for (const [key, config] of Object.entries(ANALYSIS_CONFIG)) {
+                const a = results.analyses[key];
+                if (a && a.scores) {
+                    for (const tool of Object.keys(toolScores)) {
+                        toolScores[tool] += (a.scores[tool] || 0) * config.weight;
+                    }
+                    totalW += config.weight;
+                }
+            }
+
+            // Normalize scores
+            results.scores = {};
+            for (const tool of Object.keys(toolScores)) {
+                results.scores[tool] = Math.round((toolScores[tool] / totalW) * 10);
+            }
+            
+            // Find recommendation among selected tools
+            const tools = results.selectedTools;
+            let maxScore = 0;
+            let recommendation = tools[0];
+            for (const tool of tools) {
+                if (results.scores[tool] > maxScore) {
+                    maxScore = results.scores[tool];
+                    recommendation = tool;
+                }
+            }
+            
+            results.recommendation = TOOL_CONFIG[recommendation].name;
+            results.recommendationKey = recommendation;
+            
+            // Calculate score difference for confidence
+            const sortedScores = tools.map(t => results.scores[t]).sort((a, b) => b - a);
+            results.scoreDifference = sortedScores[0] - (sortedScores[1] || 0);
+            results.confidence = Math.min(95, 60 + results.scoreDifference * 5);
+
+            // Generate summary based on findings
+            results.summary = generateSummary(results);
+
+            log(`Complete! ${results.recommendation} recommended (${results.confidence}% confidence)`, 'success');
+            return results;
+        }
+
+        function generateSummary(r) {
+            const { analyses: a, recommendation: rec, recommendationKey: recKey } = r;
+            let reasons = [];
+            
+            if (recKey === 'playwright') {
+                if (a.shadowDom.detected) reasons.push('Shadow DOM detected');
+                if (a.frameworks.frameworks.some(f => ['react', 'vue', 'angular', 'nextjs'].includes(f))) 
+                    reasons.push(`${a.frameworks.frameworks.filter(f => f !== 'jquery').join('/')} framework`);
+                if (a.dynamicContent.severity !== 'low') reasons.push('heavy dynamic content');
+                if (a.iframes.count > 0) reasons.push(`${a.iframes.count} iframes`);
+                if (a.networkRequirements.detected) reasons.push('API-heavy architecture');
+                
+                return `Playwright is recommended due to ${reasons.slice(0, 3).join(', ') || 'modern web patterns'}. Playwright's auto-wait, network interception, and modern APIs handle these patterns effectively.`;
+            } else if (recKey === 'cypress') {
+                if (a.frameworks.frameworks.some(f => ['react', 'vue', 'nextjs', 'nuxt'].includes(f))) 
+                    reasons.push(`${a.frameworks.frameworks.filter(f => f !== 'jquery').join('/')} framework`);
+                if (a.dynamicContent.severity !== 'low') reasons.push('dynamic content');
+                if (a.networkRequirements.detected) reasons.push('API-heavy architecture');
+                if (a.selectorComplexity.evidence.testIds > 0) reasons.push('existing test IDs');
+                
+                return `Cypress is recommended due to ${reasons.slice(0, 3).join(', ') || 'modern frontend architecture'}. Cypress excels with React/Vue apps and provides excellent developer experience with time-travel debugging.`;
+            } else if (recKey === 'webdriverio') {
+                if (a.legacySupport.detected) reasons.push('legacy browser support');
+                if (!a.shadowDom.detected) reasons.push('traditional DOM structure');
+                
+                return `WebdriverIO is recommended ${reasons.length > 0 ? 'due to ' + reasons.join(', ') : 'for this website'}. WebdriverIO offers flexibility with multiple protocols and excellent mobile testing support via Appium.`;
+            } else {
+                if (a.legacySupport.detected) reasons.push('legacy browser support needed');
+                if (!a.shadowDom.detected && !a.frameworks.detected) reasons.push('traditional HTML structure');
+                if (a.dynamicContent.severity === 'low') reasons.push('simple page architecture');
+                
+                return `Selenium is recommended ${reasons.length > 0 ? 'due to ' + reasons.join(', ') : 'for this website'}. The mature Selenium ecosystem, wide browser support, and extensive community make it a solid choice here.`;
+            }
+        }
+
+        function generateReport(r) {
+            const { analyses: a, scores: s, recommendation: rec, confidence: conf, url, selectedTools } = r;
+            
+            // Build scores line for selected tools
+            const scoresLine = selectedTools.map(t => `${TOOL_CONFIG[t].name}: ${s[t]}/100`).join('  |  ');
+            
+            let report = `AUTOMATION TOOL ANALYSIS REPORT
+${'═'.repeat(50)}
+Website: ${url}
+Analyzed: ${r.timestamp}
+Tools Compared: ${selectedTools.map(t => TOOL_CONFIG[t].name).join(', ')}
+${'═'.repeat(50)}
+
+RECOMMENDATION: ${rec.toUpperCase()}
+Confidence: ${conf}%
+${scoresLine}
+
+${r.summary}
+
+${'═'.repeat(50)}
+DETAILED FINDINGS
+${'═'.repeat(50)}
+`;
+            for (const [key, config] of Object.entries(ANALYSIS_CONFIG)) {
+                const d = a[key];
+                if (d) {
+                    report += `\n${config.icon} ${config.name.toUpperCase()}\n${'─'.repeat(40)}\n`;
+                    report += `Status: ${d.detected ? '[!] DETECTED' : '[OK] Clear'} | Severity: ${d.severity}\n`;
+                    // Show scores for selected tools
+                    const toolScores = selectedTools.map(t => `${TOOL_CONFIG[t].name}: ${d.scores[t]}/10`).join(' | ');
+                    report += `${toolScores}\n`;
+                    const detailsText = typeof d.getDetails === 'function' ? d.getDetails(selectedTools) : d.details;
+                    report += `${detailsText}\n`;
+                }
+            }
+            report += `\n${'═'.repeat(50)}\nGenerated by SelectorsHub Automation Analyzer\nhttps://selectorshub.com\n`;
+            return report;
+        }
+
+        // =====================================================
+        // UI HANDLERS
+        // =====================================================
+
+        function showError(message) {
+            document.getElementById('loadingSection').classList.remove('active');
+            document.getElementById('resultsSection').classList.remove('active');
+            document.getElementById('errorSection').classList.add('active');
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        function hideError() {
+            document.getElementById('errorSection').classList.remove('active');
+        }
+
+        function retryAnalysis() {
+            hideError();
+            if (lastUrl) {
+                document.getElementById('urlInput').value = lastUrl;
+                startAnalysis();
+            }
+        }
+
+        async function analyzeManualHtml() {
+            const html = document.getElementById('manualHtmlInput').value.trim();
+            if (!html) {
+                alert('Please paste the HTML source code first.');
+                return;
+            }
+            
+            if (html.length < 100) {
+                alert('The pasted content seems too short. Please paste the complete HTML source.');
+                return;
+            }
+
+            hideError();
+            const loading = document.getElementById('loadingSection');
+            const results = document.getElementById('resultsSection');
+            
+            loading.classList.add('active');
+            results.classList.remove('active');
+            document.getElementById('loadingLog').innerHTML = '';
+            
+            log('Analyzing pasted HTML...', 'info');
+            log(`Received ${(html.length / 1024).toFixed(1)}KB of HTML`, 'success');
+
+            try {
+                const url = lastUrl || 'Manual HTML Input';
+                const data = await performAnalysis(html, url);
+                analysisData = data;
+
+                displayResults(data);
+                loading.classList.remove('active');
+                results.classList.add('active');
+                results.scrollIntoView({ behavior: 'smooth' });
+            } catch (e) {
+                log('Error: ' + e.message, 'error');
+                loading.classList.remove('active');
+                alert('Analysis failed: ' + e.message);
+            }
+        }
+
+        async function startAnalysis() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) return alert('Please enter a website URL');
+            try { new URL(url); } catch { return alert('Please enter a valid URL with https://'); }
+
+            lastUrl = url;
+            hideError();
+
+            const btn = document.getElementById('analyzeBtn');
+            const loading = document.getElementById('loadingSection');
+            const results = document.getElementById('resultsSection');
+
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div><span>Analyzing...</span>';
+            loading.classList.add('active');
+            results.classList.remove('active');
+            document.getElementById('loadingLog').innerHTML = '';
+
+            try {
+                updateStep('Fetching website...');
+                log(`Fetching ${url}...`, 'info');
+                const html = await fetchWithProxy(url);
+
+                const data = await performAnalysis(html, url);
+                analysisData = data;
+
+                displayResults(data);
+                results.classList.add('active');
+                loading.classList.remove('active');
+                results.scrollIntoView({ behavior: 'smooth' });
+            } catch (e) {
+                log('Error: ' + e.message, 'error');
+                loading.classList.remove('active');
+                showError(e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg><span class="btn-text">Analyze Website</span>';
+            }
+        }
+
+        function displayResults(r) {
+            const { analyses: a, scores: s, recommendation: rec, recommendationKey: recKey, confidence: conf, selectedTools } = r;
+
+            // Hero
+            const hero = document.getElementById('heroCard');
+            hero.className = `hero-card ${recKey}`;
+            document.getElementById('heroTool').textContent = rec;
+            document.getElementById('heroConfidence').textContent = `${conf}%`;
+            document.getElementById('confidenceFill').style.width = `${conf}%`;
+            document.getElementById('heroSummary').textContent = r.summary;
+
+            // Dynamic Score Cards
+            const scoreGrid = document.getElementById('scoreGrid');
+            scoreGrid.innerHTML = '';
+            
+            for (const tool of selectedTools) {
+                const config = TOOL_CONFIG[tool];
+                const isWinner = tool === recKey;
+                const card = document.createElement('div');
+                card.className = `score-card ${tool}${isWinner ? ' winner' : ''}`;
+                card.innerHTML = `
+                    <div class="score-header">
+                        <div class="score-logo"></div>
+                        <span class="score-name">${config.name}</span>
+                    </div>
+                    <div class="score-value">${s[tool]}</div>
+                    <div class="score-label">Suitability Score</div>
+                `;
+                scoreGrid.appendChild(card);
+            }
+
+            // Detections
+            const dg = document.getElementById('detectionGrid');
+            dg.innerHTML = '';
+            [
+                { name: 'Shadow DOM', detected: a.shadowDom.detected, count: a.shadowDom.count, icon: 'SD' },
+                { name: 'iFrames', detected: a.iframes.detected, count: a.iframes.count, icon: 'IF' },
+                { name: 'Frameworks', detected: a.frameworks.detected, value: a.frameworks.frameworks.join(', '), icon: 'FW' },
+                { name: 'Dynamic Content', detected: a.dynamicContent.detected, value: a.dynamicContent.severity, icon: 'DC' },
+                { name: 'Auth Forms', detected: a.authentication.detected, value: a.authentication.evidence.oauth ? 'OAuth' : 'Basic', icon: 'AU' },
+                { name: 'File Uploads', detected: a.fileUploads.detected, count: a.fileUploads.evidence.fileInputs, icon: 'FU' }
+            ].forEach(d => {
+                const el = document.createElement('div');
+                el.className = 'detection-item';
+                el.innerHTML = `<span class="detection-icon">${d.icon}</span>
+                    <div class="detection-info">
+                        <div class="detection-name">${d.name}</div>
+                        <div class="detection-status ${d.detected ? 'detected' : 'not-detected'}">
+                            ${d.detected ? (d.count ? `${d.count} found` : d.value || 'Detected') : 'Not detected'}
+                        </div>
+                    </div>`;
+                dg.appendChild(el);
+            });
+
+            // Analysis cards
+            const ag = document.getElementById('analysisGrid');
+            ag.innerHTML = '';
+            for (const [key, config] of Object.entries(ANALYSIS_CONFIG)) {
+                const d = a[key];
+                if (!d) continue;
+                
+                // Find winner among selected tools
+                let maxScore = 0;
+                let winner = null;
+                let isTie = false;
+                for (const tool of selectedTools) {
+                    if (d.scores[tool] > maxScore) {
+                        maxScore = d.scores[tool];
+                        winner = tool;
+                        isTie = false;
+                    } else if (d.scores[tool] === maxScore) {
+                        isTie = true;
+                    }
+                }
+                
+                const winnerClass = isTie ? 'tie' : winner;
+                const winnerName = isTie ? 'Tie' : `${TOOL_CONFIG[winner].name} Wins`;
+                
+                // Build score boxes for selected tools
+                const scoreBoxes = selectedTools.map(tool => `
+                    <div class="analysis-score ${tool}">
+                        <div class="analysis-score-label">${TOOL_CONFIG[tool].name}</div>
+                        <div class="analysis-score-value">${d.scores[tool]}</div>
+                    </div>
+                `).join('');
+                
+                const card = document.createElement('div');
+                card.className = 'analysis-card';
+                const detailsText = typeof d.getDetails === 'function' ? d.getDetails(selectedTools) : d.details;
+                card.innerHTML = `
+                    <div class="analysis-header">
+                        <div class="analysis-icon">${config.icon}</div>
+                        <h3 class="analysis-title">${config.name}</h3>
+                    </div>
+                    <div class="analysis-scores">${scoreBoxes}</div>
+                    <p class="analysis-details">${detailsText}</p>
+                    ${d.evidence.examples ? `<div class="analysis-evidence">Examples: ${d.evidence.examples.join(', ')}</div>` : ''}
+                    <span class="analysis-winner ${winnerClass}">${winnerName}</span>`;
+                ag.appendChild(card);
+            }
+
+            // Report
+            document.getElementById('reportContent').textContent = generateReport(r);
+        }
+
+        function exportReport() {
+            if (!analysisData) return;
+            const blob = new Blob([generateReport(analysisData)], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `automation-analysis-${new URL(analysisData.url).hostname}-${Date.now()}.txt`;
+            a.click();
+        }
+
+        document.getElementById('urlInput').addEventListener('keypress', e => { if (e.key === 'Enter') startAnalysis(); });
+    </script>
+</body>
+</html>
