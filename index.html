@@ -233,6 +233,32 @@
             color: var(--text-light);
         }
 
+        /* FIX #2: URL validation error state */
+        .url-input.input-error {
+            border-color: var(--sh-red) !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+            background: #fef2f2 !important;
+        }
+
+        .url-error-msg {
+            display: none;
+            color: var(--sh-red);
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 8px;
+            padding-left: 4px;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .url-error-msg.visible {
+            display: flex;
+        }
+
+        .url-error-msg svg {
+            flex-shrink: 0;
+        }
+
         /* Tool Selection Checkboxes */
         .tool-selection {
             margin-top: 20px !important;
@@ -490,7 +516,75 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
             color: var(--sh-orange);
-            margin-bottom: 28px;
+            margin-bottom: 16px;
+        }
+
+        /* Timer Badge - Loading */
+        .timer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 16px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            animation: pulse-subtle 2s ease-in-out infinite;
+        }
+
+        .timer-badge .timer-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--sh-orange);
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes pulse-subtle {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(202, 119, 2, 0); }
+            50% { box-shadow: 0 0 0 4px rgba(202, 119, 2, 0.08); }
+        }
+
+        /* Completion Time Badge - Results */
+        .time-taken-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 16px;
+            background: var(--sh-green-light);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            border-radius: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: #16a34a;
+        }
+
+        .time-taken-badge svg {
+            flex-shrink: 0;
+        }
+
+        .report-time-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
         }
 
         .loading-log {
@@ -918,11 +1012,97 @@
             color: var(--text-muted);
             margin-bottom: 16px;
             margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .hero-confidence strong {
             color: var(--text-dark);
             font-weight: 700;
+        }
+
+        /* FIX #5: Confidence tooltip */
+        .confidence-tooltip-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .confidence-help-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: help;
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .confidence-help-icon:hover {
+            background: var(--sh-orange-light);
+            border-color: var(--sh-orange);
+            color: var(--sh-orange);
+        }
+
+        .confidence-tooltip {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 12px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 340px;
+            background: var(--text-dark);
+            color: #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            font-size: 13px;
+            line-height: 1.6;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .confidence-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: var(--text-dark);
+        }
+
+        .confidence-tooltip strong {
+            color: var(--sh-orange-light);
+            font-weight: 600;
+        }
+
+        .confidence-help-icon:hover + .confidence-tooltip {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .confidence-tooltip {
+                width: 260px;
+                left: auto;
+                right: -20px;
+                transform: none;
+            }
+            .confidence-tooltip::after {
+                left: auto;
+                right: 28px;
+                transform: none;
+            }
         }
 
         .confidence-bar {
@@ -965,22 +1145,49 @@
             line-height: 1.8;
         }
 
-        /* Score Grid */
+        /* FIX #4: Score Grid - responsive for 2, 3, or 4 tools */
         .score-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 24px;
             margin-bottom: 32px;
+        }
+
+        .score-grid.tools-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .score-grid.tools-4 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (min-width: 900px) {
+            .score-grid.tools-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .score-grid.tools-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .score-grid,
+            .score-grid.tools-3,
+            .score-grid.tools-4 {
+                grid-template-columns: 1fr;
+            }
         }
 
         .score-card {
             background: var(--bg-white);
             border: 2px solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: 32px;
+            padding: 28px 24px;
             position: relative;
             transition: all 0.3s ease;
             box-shadow: var(--shadow-sm);
+            min-width: 0;
+            overflow: hidden;
         }
 
         .score-card:hover {
@@ -1013,15 +1220,16 @@
         }
 
         .score-card.winner::after {
-            content: '✓ RECOMMENDED';
+            content: '\2713  RECOMMENDED';
             position: absolute;
-            top: 16px;
-            right: 16px;
-            font-size: 10px;
+            top: 12px;
+            right: 12px;
+            font-size: 9px;
             font-weight: 700;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 6px;
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         .score-card.selenium.winner::after {
@@ -1047,13 +1255,13 @@
         .score-header {
             display: flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 24px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .score-logo {
-            width: 52px;
-            height: 52px;
+            width: 48px;
+            height: 48px;
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
@@ -1061,6 +1269,7 @@
             background-size: 70%;
             background-repeat: no-repeat;
             background-position: center;
+            flex-shrink: 0;
         }
 
         .score-card.selenium .score-logo {
@@ -1088,8 +1297,11 @@
         }
 
         .score-name {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .score-card.selenium .score-name { color: var(--selenium-color); }
@@ -1098,7 +1310,7 @@
         .score-card.webdriverio .score-name { color: var(--webdriverio-color); }
 
         .score-value {
-            font-size: 64px;
+            font-size: 56px;
             font-weight: 800;
             line-height: 1;
             margin-bottom: 8px;
@@ -1240,13 +1452,15 @@
 
         .analysis-scores {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .analysis-score {
             flex: 1;
-            padding: 16px;
+            min-width: 70px;
+            padding: 14px 10px;
             background: var(--bg-light);
             border-radius: var(--radius-sm);
             text-align: center;
@@ -1254,16 +1468,19 @@
         }
 
         .analysis-score-label {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-light);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 6px;
             font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .analysis-score-value {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
         }
 
@@ -1440,9 +1657,10 @@
             <h1 class="title">
                 Automation <span class="title-highlight">Tool Analyzer</span>
             </h1>
+            <!-- FIX #3: Updated subtitle to include Cypress and WebDriverIO -->
             <p class="subtitle">
                 Enter a URL to <strong>analyze</strong> the website's HTML and get a data-driven 
-                recommendation on whether to use <strong>Selenium</strong> or <strong>Playwright</strong>
+                recommendation on whether to use <strong>Selenium</strong>, <strong>Playwright</strong>, <strong>Cypress</strong>, or <strong>WebDriverIO</strong>
             </p>
         </header>
 
@@ -1451,7 +1669,13 @@
             <div class="input-row">
                 <div class="url-wrapper">
                     <input type="url" class="url-input" id="urlInput" 
-                           placeholder="Enter website URL (e.g., https://example.com)" />
+                           placeholder="Enter website URL (e.g., https://example.com)"
+                           oninput="clearUrlError()" />
+                    <!-- FIX #2: URL validation error message -->
+                    <div class="url-error-msg" id="urlErrorMsg">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        <span id="urlErrorText">Please enter a valid URL</span>
+                    </div>
                 </div>
                 <button class="analyze-btn" id="analyzeBtn" onclick="startAnalysis()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
@@ -1539,6 +1763,10 @@
             <div class="loading-spinner"></div>
             <div class="loading-title">Analyzing Website...</div>
             <div class="loading-step" id="loadingStep">Initializing...</div>
+            <div class="timer-badge" id="timerBadge">
+                <span class="timer-dot"></span>
+                <span id="timerDisplay">0.0s</span>
+            </div>
             <div class="loading-log" id="loadingLog"></div>
         </section>
 
@@ -1583,9 +1811,22 @@
             <!-- Hero Card -->
             <div class="hero-card" id="heroCard">
                 <span class="hero-label">Recommended Tool</span>
+                <div class="time-taken-badge" id="heroTimeBadge" style="display: none; margin-bottom: 20px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span id="heroTimeText">Analyzed in 0.0s</span>
+                </div>
                 <div class="hero-tool" id="heroTool">Playwright</div>
+                <!-- FIX #5: Confidence score with tooltip -->
                 <div class="hero-confidence">
                     Confidence Score: <strong id="heroConfidence">85%</strong>
+                    <span class="confidence-tooltip-wrap">
+                        <span class="confidence-help-icon">?</span>
+                        <span class="confidence-tooltip">
+                            <strong>How is this calculated?</strong><br><br>
+                            The confidence score is based on the <strong>score gap</strong> between the top-recommended tool and the runner-up across 9 weighted analysis categories (Shadow DOM, iFrames, Frameworks, Dynamic Content, Selectors, Network, Auth, File Uploads, Legacy Support).<br><br>
+                            A <strong>larger gap</strong> means one tool is a clearly better fit = higher confidence. A <strong>smaller gap</strong> means tools are closely matched = lower confidence. The score starts at 60% and increases by 5% per point of difference, capping at 95%.
+                        </span>
+                    </span>
                 </div>
                 <div class="confidence-bar">
                     <div class="confidence-fill" id="confidenceFill"></div>
@@ -1615,10 +1856,16 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                         Detailed Analysis Report
                     </h2>
-                    <button class="export-btn" onclick="exportReport()">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        <span>Export Report</span>
-                    </button>
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <span class="report-time-badge" id="reportTimeBadge" style="display: none;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            <span id="reportTimeText">0.0s</span>
+                        </span>
+                        <button class="export-btn" onclick="exportReport()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            <span>Export Report</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="report-content" id="reportContent"></div>
             </div>
@@ -1636,7 +1883,7 @@
             </div>
             <p>Part of the SelectorsHub Ecosystem</p>
             <p style="margin-top: 8px;">Real HTML Analysis &bull; Built for QA Community</p>
-            <p style="margin-top: 8px;">Follow below tutorial for live demo. ⤵️</p>
+            <p style="margin-top: 8px;">Follow below tutorial for live demo. &#x2935;&#xFE0F;</p>
         </footer>
     </div>
 
@@ -1649,12 +1896,144 @@
         let lastUrl = '';
         let selectedTools = ['selenium', 'playwright']; // Default selected tools
 
+        // Timer state
+        let timerInterval = null;
+        let timerStart = 0;
+        let totalElapsed = 0;
+
+        function startTimer() {
+            timerStart = performance.now();
+            totalElapsed = 0;
+            const display = document.getElementById('timerDisplay');
+            if (display) display.textContent = '0.0s';
+            
+            // Clear any existing interval
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                totalElapsed = ((performance.now() - timerStart) / 1000);
+                const display = document.getElementById('timerDisplay');
+                if (display) {
+                    display.textContent = totalElapsed < 60 
+                        ? totalElapsed.toFixed(1) + 's'
+                        : Math.floor(totalElapsed / 60) + 'm ' + (totalElapsed % 60).toFixed(0) + 's';
+                }
+            }, 100);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            totalElapsed = ((performance.now() - timerStart) / 1000);
+            return totalElapsed;
+        }
+
+        function formatTime(seconds) {
+            if (seconds < 60) return seconds.toFixed(1) + 's';
+            return Math.floor(seconds / 60) + 'm ' + (seconds % 60).toFixed(0) + 's';
+        }
+
+        function showCompletionTime(seconds) {
+            const formatted = formatTime(seconds);
+            
+            // Hero badge
+            const heroBadge = document.getElementById('heroTimeBadge');
+            const heroText = document.getElementById('heroTimeText');
+            if (heroBadge && heroText) {
+                heroText.textContent = 'Analyzed in ' + formatted;
+                heroBadge.style.display = 'inline-flex';
+            }
+            
+            // Report badge
+            const reportBadge = document.getElementById('reportTimeBadge');
+            const reportText = document.getElementById('reportTimeText');
+            if (reportBadge && reportText) {
+                reportText.textContent = formatted;
+                reportBadge.style.display = 'inline-flex';
+            }
+        }
+
         const TOOL_CONFIG = {
             selenium: { name: 'Selenium', logo: 'Se', color: '#43b02a' },
             playwright: { name: 'Playwright', logo: 'Pw', color: '#2d7ff9' },
             cypress: { name: 'Cypress', logo: 'Cy', color: '#00BF88' },
             webdriverio: { name: 'WebdriverIO', logo: 'Wd', color: '#EA5906' }
         };
+
+        // =====================================================
+        // FIX #2: URL validation helpers
+        // =====================================================
+        
+        function clearUrlError() {
+            const input = document.getElementById('urlInput');
+            const errorMsg = document.getElementById('urlErrorMsg');
+            input.classList.remove('input-error');
+            errorMsg.classList.remove('visible');
+        }
+
+        function showUrlError(message) {
+            const input = document.getElementById('urlInput');
+            const errorMsg = document.getElementById('urlErrorMsg');
+            const errorText = document.getElementById('urlErrorText');
+            input.classList.add('input-error');
+            errorText.textContent = message;
+            errorMsg.classList.add('visible');
+            input.focus();
+        }
+
+        // =====================================================
+        // FIX #6: URL normalization - auto add https, convert http
+        // =====================================================
+        
+        function normalizeUrl(rawUrl) {
+            let url = rawUrl.trim();
+            if (!url) return '';
+            
+            // If no protocol at all, add https://
+            if (!/^https?:\/\//i.test(url)) {
+                // Check if it looks like a domain (contains a dot)
+                if (url.includes('.')) {
+                    url = 'https://' + url;
+                } else {
+                    return ''; // Not a valid domain
+                }
+            }
+            
+            // Convert http:// to https://
+            if (/^http:\/\//i.test(url)) {
+                url = url.replace(/^http:\/\//i, 'https://');
+            }
+            
+            return url;
+        }
+
+        function validateUrl(rawUrl) {
+            if (!rawUrl.trim()) {
+                showUrlError('Please enter a website URL');
+                return null;
+            }
+
+            const normalized = normalizeUrl(rawUrl);
+            
+            if (!normalized) {
+                showUrlError('Please enter a valid domain (e.g., example.com or https://example.com)');
+                return null;
+            }
+
+            try {
+                const parsed = new URL(normalized);
+                if (!parsed.hostname.includes('.')) {
+                    showUrlError('Please enter a valid domain with an extension (e.g., example.com)');
+                    return null;
+                }
+                return normalized;
+            } catch {
+                showUrlError('Invalid URL format. Try entering just the domain (e.g., google.com)');
+                return null;
+            }
+        }
 
         function toggleTool(element, event) {
             if (event) {
@@ -1746,7 +2125,7 @@
         }
 
         async function fetchWithProxy(url) {
-            const timeout = 15000; // 15 second timeout per proxy
+            const timeout = 15000;
             let lastError = null;
             
             for (let i = 0; i < CORS_PROXIES.length; i++) {
@@ -1770,25 +2149,19 @@
                     if (response.ok) {
                         let html = await response.text();
                         
-                        // Handle allorigins.win /get endpoint which returns JSON
                         if (proxyUrl.includes('allorigins.win/get')) {
                             try {
                                 const jsonData = JSON.parse(html);
                                 html = jsonData.contents || html;
-                            } catch (e) {
-                                // Not JSON, use as-is
-                            }
+                            } catch (e) {}
                         }
                         
-                        // Check if we got valid HTML
                         if (html && html.length > 500 && (html.includes('<html') || html.includes('<head') || html.includes('<body') || html.includes('<!DOCTYPE'))) {
                             log(`Successfully fetched ${(html.length / 1024).toFixed(1)}KB of HTML`, 'success');
                             return html;
                         } else if (html && html.length > 100) {
-                            // Might be partial HTML or different format
                             log(`Received ${(html.length / 1024).toFixed(1)}KB (may be partial)`, 'warning');
                             if (i === CORS_PROXIES.length - 1) {
-                                // Last proxy, use what we have
                                 return html;
                             }
                         } else {
@@ -1920,7 +2293,7 @@
                 scores: {
                     selenium: isModern ? 5 : 7,
                     playwright: isModern ? 9 : 7,
-                    cypress: isReactOrVue ? 9 : (isModern ? 8 : 7), // Cypress excels with React/Vue
+                    cypress: isReactOrVue ? 9 : (isModern ? 8 : 7),
                     webdriverio: isModern ? 6 : 7
                 },
                 getDetails: function(tools) {
@@ -1977,7 +2350,7 @@
                 scores: {
                     selenium: total > 10 ? 4 : total > 5 ? 6 : 8,
                     playwright: total > 5 ? 9 : 8,
-                    cypress: total > 5 ? 9 : 8, // Cypress has excellent auto-waiting
+                    cypress: total > 5 ? 9 : 8,
                     webdriverio: total > 10 ? 5 : total > 5 ? 6 : 8
                 },
                 getDetails: function(tools) {
@@ -2024,7 +2397,7 @@
                 scores: {
                     selenium: testIds > 5 ? 8 : (complexity === 'high' ? 5 : 7),
                     playwright: testIds > 5 ? 8 : (complexity === 'high' ? 7 : 7),
-                    cypress: hasCyTestIds ? 9 : (testIds > 5 ? 8 : (complexity === 'high' ? 6 : 7)), // Cypress uses data-cy
+                    cypress: hasCyTestIds ? 9 : (testIds > 5 ? 8 : (complexity === 'high' ? 6 : 7)),
                     webdriverio: testIds > 5 ? 8 : (complexity === 'high' ? 5 : 7)
                 },
                 getDetails: function(tools) {
@@ -2059,7 +2432,7 @@
                 scores: {
                     selenium: needsMocking ? 5 : 7,
                     playwright: needsMocking ? 9 : 7,
-                    cypress: needsMocking ? 9 : 7, // Cypress has excellent network stubbing with cy.intercept()
+                    cypress: needsMocking ? 9 : 7,
                     webdriverio: needsMocking ? 5 : 7
                 },
                 getDetails: function(tools) {
@@ -2097,8 +2470,8 @@
                 severity: hasCaptcha ? 'high' : hasOAuth ? 'medium' : 'low',
                 scores: {
                     selenium: hasCaptcha ? 4 : hasOAuth ? 6 : 7,
-                    playwright: hasCaptcha ? 5 : hasOAuth ? 8 : 8, // Playwright has storageState
-                    cypress: hasCaptcha ? 4 : hasOAuth ? 7 : 8, // Cypress has cy.session()
+                    playwright: hasCaptcha ? 5 : hasOAuth ? 8 : 8,
+                    cypress: hasCaptcha ? 4 : hasOAuth ? 7 : 8,
                     webdriverio: hasCaptcha ? 4 : hasOAuth ? 6 : 7
                 },
                 getDetails: function(tools) {
@@ -2134,8 +2507,8 @@
                 severity: fileInputs > 0 ? 'medium' : 'low',
                 scores: {
                     selenium: fileInputs > 0 ? 6 : 8,
-                    playwright: fileInputs > 0 ? 9 : 8, // setInputFiles() is clean
-                    cypress: fileInputs > 0 ? 7 : 8, // cy.selectFile() works well
+                    playwright: fileInputs > 0 ? 9 : 8,
+                    cypress: fileInputs > 0 ? 7 : 8,
                     webdriverio: fileInputs > 0 ? 6 : 8
                 },
                 getDetails: function(tools) {
@@ -2172,10 +2545,10 @@
                 evidence: { ieConditionals: ieCode, oldJquery, legacyPatterns: legacy },
                 severity: needsLegacy ? 'high' : 'low',
                 scores: {
-                    selenium: needsLegacy ? 9 : 7, // Best legacy support
-                    playwright: needsLegacy ? 5 : 8, // No IE support
-                    cypress: needsLegacy ? 4 : 7, // Chrome-focused, limited legacy
-                    webdriverio: needsLegacy ? 8 : 7 // Good legacy support via Selenium
+                    selenium: needsLegacy ? 9 : 7,
+                    playwright: needsLegacy ? 5 : 8,
+                    cypress: needsLegacy ? 4 : 7,
+                    webdriverio: needsLegacy ? 8 : 7
                 },
                 getDetails: function(tools) {
                     if (!needsLegacy) return 'Modern codebase. No legacy requirements.';
@@ -2269,7 +2642,6 @@
             results.scoreDifference = sortedScores[0] - (sortedScores[1] || 0);
             results.confidence = Math.min(95, 60 + results.scoreDifference * 5);
 
-            // Generate summary based on findings
             results.summary = generateSummary(results);
 
             log(`Complete! ${results.recommendation} recommended (${results.confidence}% confidence)`, 'success');
@@ -2314,15 +2686,15 @@
         function generateReport(r) {
             const { analyses: a, scores: s, recommendation: rec, confidence: conf, url, selectedTools } = r;
             
-            // Build scores line for selected tools
             const scoresLine = selectedTools.map(t => `${TOOL_CONFIG[t].name}: ${s[t]}/100`).join('  |  ');
+            const timeStr = r.elapsedTime ? `Analysis Time: ${formatTime(r.elapsedTime)}` : '';
             
             let report = `AUTOMATION TOOL ANALYSIS REPORT
-${'═'.repeat(50)}
+${'='.repeat(50)}
 Website: ${url}
 Analyzed: ${r.timestamp}
-Tools Compared: ${selectedTools.map(t => TOOL_CONFIG[t].name).join(', ')}
-${'═'.repeat(50)}
+Tools Compared: ${selectedTools.map(t => TOOL_CONFIG[t].name).join(', ')}${timeStr ? '\n' + timeStr : ''}
+${'='.repeat(50)}
 
 RECOMMENDATION: ${rec.toUpperCase()}
 Confidence: ${conf}%
@@ -2330,23 +2702,22 @@ ${scoresLine}
 
 ${r.summary}
 
-${'═'.repeat(50)}
+${'='.repeat(50)}
 DETAILED FINDINGS
-${'═'.repeat(50)}
+${'='.repeat(50)}
 `;
             for (const [key, config] of Object.entries(ANALYSIS_CONFIG)) {
                 const d = a[key];
                 if (d) {
                     report += `\n${config.icon} ${config.name.toUpperCase()}\n${'─'.repeat(40)}\n`;
                     report += `Status: ${d.detected ? '[!] DETECTED' : '[OK] Clear'} | Severity: ${d.severity}\n`;
-                    // Show scores for selected tools
                     const toolScores = selectedTools.map(t => `${TOOL_CONFIG[t].name}: ${d.scores[t]}/10`).join(' | ');
                     report += `${toolScores}\n`;
                     const detailsText = typeof d.getDetails === 'function' ? d.getDetails(selectedTools) : d.details;
                     report += `${detailsText}\n`;
                 }
             }
-            report += `\n${'═'.repeat(50)}\nGenerated by SelectorsHub Automation Analyzer\nhttps://selectorshub.com\n`;
+            report += `\n${'='.repeat(50)}\nGenerated by SelectorsHub Automation Analyzer\nhttps://selectorshub.com\n`;
             return report;
         }
 
@@ -2392,6 +2763,14 @@ ${'═'.repeat(50)}
             loading.classList.add('active');
             results.classList.remove('active');
             document.getElementById('loadingLog').innerHTML = '';
+
+            // Start the live timer
+            startTimer();
+
+            // Auto-scroll to loading section
+            setTimeout(() => {
+                loading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
             
             log('Analyzing pasted HTML...', 'info');
             log(`Received ${(html.length / 1024).toFixed(1)}KB of HTML`, 'success');
@@ -2401,11 +2780,15 @@ ${'═'.repeat(50)}
                 const data = await performAnalysis(html, url);
                 analysisData = data;
 
+                const elapsed = stopTimer();
+                analysisData.elapsedTime = elapsed;
                 displayResults(data);
+                showCompletionTime(elapsed);
                 loading.classList.remove('active');
                 results.classList.add('active');
                 results.scrollIntoView({ behavior: 'smooth' });
             } catch (e) {
+                stopTimer();
                 log('Error: ' + e.message, 'error');
                 loading.classList.remove('active');
                 alert('Analysis failed: ' + e.message);
@@ -2413,9 +2796,15 @@ ${'═'.repeat(50)}
         }
 
         async function startAnalysis() {
-            const url = document.getElementById('urlInput').value.trim();
-            if (!url) return alert('Please enter a website URL');
-            try { new URL(url); } catch { return alert('Please enter a valid URL with https://'); }
+            const rawUrl = document.getElementById('urlInput').value.trim();
+            
+            // FIX #2 + #6: Validate and normalize URL
+            clearUrlError();
+            const url = validateUrl(rawUrl);
+            if (!url) return;
+
+            // Update input with normalized URL
+            document.getElementById('urlInput').value = url;
 
             lastUrl = url;
             hideError();
@@ -2430,6 +2819,14 @@ ${'═'.repeat(50)}
             results.classList.remove('active');
             document.getElementById('loadingLog').innerHTML = '';
 
+            // Start the live timer
+            startTimer();
+
+            // Auto-scroll to loading section
+            setTimeout(() => {
+                loading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+
             try {
                 updateStep('Fetching website...');
                 log(`Fetching ${url}...`, 'info');
@@ -2438,11 +2835,15 @@ ${'═'.repeat(50)}
                 const data = await performAnalysis(html, url);
                 analysisData = data;
 
+                const elapsed = stopTimer();
+                analysisData.elapsedTime = elapsed;
                 displayResults(data);
+                showCompletionTime(elapsed);
                 results.classList.add('active');
                 loading.classList.remove('active');
                 results.scrollIntoView({ behavior: 'smooth' });
             } catch (e) {
+                stopTimer();
                 log('Error: ' + e.message, 'error');
                 loading.classList.remove('active');
                 showError(e.message);
@@ -2463,9 +2864,12 @@ ${'═'.repeat(50)}
             document.getElementById('confidenceFill').style.width = `${conf}%`;
             document.getElementById('heroSummary').textContent = r.summary;
 
-            // Dynamic Score Cards
+            // FIX #4: Dynamic Score Cards with responsive grid class
             const scoreGrid = document.getElementById('scoreGrid');
             scoreGrid.innerHTML = '';
+            
+            // Set responsive class based on number of selected tools
+            scoreGrid.className = `score-grid tools-${selectedTools.length}`;
             
             for (const tool of selectedTools) {
                 const config = TOOL_CONFIG[tool];
@@ -2513,7 +2917,6 @@ ${'═'.repeat(50)}
                 const d = a[key];
                 if (!d) continue;
                 
-                // Find winner among selected tools
                 let maxScore = 0;
                 let winner = null;
                 let isTie = false;
@@ -2530,7 +2933,6 @@ ${'═'.repeat(50)}
                 const winnerClass = isTie ? 'tie' : winner;
                 const winnerName = isTie ? 'Tie' : `${TOOL_CONFIG[winner].name} Wins`;
                 
-                // Build score boxes for selected tools
                 const scoreBoxes = selectedTools.map(tool => `
                     <div class="analysis-score ${tool}">
                         <div class="analysis-score-label">${TOOL_CONFIG[tool].name}</div>
